@@ -1,0 +1,43 @@
+html {
+	background-color: #191970; 
+	font-size: 16px;
+}
+header{
+    display: flex;
+    
+}
+h1{
+    display:flex;
+	flex-direction: row ;
+	align-items: center ;
+	justify-content:space-around;
+
+}
+label{
+    display: flex ;
+    flex-direction: row ;
+    justify-content: space-around;
+    
+}
+input[type="radio"]{
+    display: flex ;
+    flex-direction: row ;
+    justify-content: center ;
+}
+a{
+    box-shadow: 0.4rem 0.4rem 0.5rem black;
+    border-radius: 1rem ; 
+    border: 1rem;
+    margin: 1rem;
+    flex-wrap: wrap  ;
+    display:flex;
+	align-items: center  ;
+	justify-content:space-around;
+    background-color: blueviolet;
+}
+a:hover{
+    width:105% ; 
+}
+a:hover , a.current-menu{
+    background-color : white;
+} 
