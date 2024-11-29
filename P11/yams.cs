@@ -85,9 +85,18 @@ class Yams{
         Partie game = initialisationJeu();
         for(int i=0; i<13; i++)
         {
-            tour(ref game.joueur[0],game.tours-1);
-            tour(ref game.joueur[1],game.tours-1);
-            game.tours++;
+            Console.WriteLine("Tour {0}",i+1);
+            Console.WriteLine();
+
+            Console.WriteLine("Tour de {0} :", game.joueur[0].pseudo);
+            tour(ref game.joueur[0],i);
+            Console.WriteLine("Vous avez gagné {0} points",game.joueur[0].scoreParTour[i]);
+            Console.WriteLine();
+
+            Console.WriteLine("Tour de {0} :", game.joueur[1].pseudo);
+            tour(ref game.joueur[1],i);
+            Console.WriteLine("Vous avez gagné {0} points",game.joueur[1].scoreParTour[i]);
+            Console.WriteLine();
         }
     }
     public static void tour(ref Joueur joueur, int tours){
@@ -97,17 +106,18 @@ class Yams{
         int i=0;
         bool fin=false;
 
-        while(i<3 || !fin)
+        while(i<3 && !fin)
         {
             for(int j=0; j<des.Length; j++)
             {
                 if(relancerDes[j]==true)
                 {
                     des[j]=rnd.Next(1,6);
-                    Thread.Sleep(10);
+                    Thread.Sleep(50);
                 }
             }
             choixDes(des,relancerDes);
+            fin = finRelance(relancerDes);
             i++;
         }
         int index = choixChallenge(joueur);
@@ -116,14 +126,35 @@ class Yams{
     }
     public static void choixDes(int[] des, bool[] relancerDes)
     {
-        Console.WriteLine("Quelle des voulez vous gardez ?");
+        Console.WriteLine("Voici vos dès :");
         afficheDes(des);
-        int index=0;
-        while(index<6){
-            index=int.Parse(Console.ReadLine());
-            relancerDes[index-1]=false;
-            Console.WriteLine("le dès numero {0} ne sera pas lancé lors du prochain lancé",index);
+        char reponse;
+        for(int i=0; i<5; i++)
+        {
+            Console.Write("Voulez vous gardez le {0} ? y/n  ", des[i]);
+            reponse = Console.ReadKey().KeyChar;
+            Console.WriteLine();
+            if(reponse=='y')
+            {
+                relancerDes[i]=false;
+            }
+            else
+            {
+                relancerDes[i]=true;
+            }      
         }
+        Console.WriteLine();
+    }
+    public static bool finRelance(bool[] tab)
+    {
+        for(int i=0; i<tab.Length; i++)
+        {
+            if(tab[i]==true)
+            {
+                return false;
+            }
+        }
+        return true;
     }
     public static int calculScore(ref Joueur j, int[] des, int indexChallenge)
     {
@@ -134,6 +165,7 @@ class Yams{
             nbPoint = 1*nbOcc(des,1);
             j.totalScoreChallengeMineure+=nbPoint;
             break;
+
             case "nombre2":
             nbPoint = 2*nbOcc(des,2);
             j.totalScoreChallengeMineure+=nbPoint;
@@ -164,13 +196,13 @@ class Yams{
             nbPoint = verifFull(des);
             break;
             case "petite":
-            if(monotonie(des)>=4)
+            if()
             {
                 nbPoint = 30;
             }
             break;
             case "grande":
-            if(monotonie(des)>=5)
+            if()
             {
                 nbPoint = 40;
             }
@@ -302,23 +334,44 @@ class Yams{
     public static int choixChallenge(Joueur j)
     {
         afficheChallenges(j);
-        Console.WriteLine("Qu'elle chalenge voulez vous choisir ?");
-        return int.Parse(Console.ReadLine());
+        Console.WriteLine("Quel challenge voulez vous choisir ?");
+        int choix = int.Parse(Console.ReadLine());
+        Console.WriteLine();
+        if(choix==0)
+        {
+            afficheChallengesDetaillé(j);
+            Console.WriteLine("Quel challenge voulez vous choisir ?");
+            return int.Parse(Console.ReadLine());
+        }
+        else
+        {
+            return choix;
+        }
     }
     public static void afficheDes(int[] des)
     {
         for(int i=0; i<des.Length; i++)
         {
-            Console.Write("{0}. {1} ; ",i+1,des[i]);
+            Console.Write("{0} ; ",des[i]);
         }
-        Console.WriteLine("{0}. Aucun",des.Length+1);
+        Console.WriteLine();
     }
     public static void afficheChallenges(Joueur j)
+    {
+        Console.WriteLine("0. Description des challenges");
+        for(int i=0; i<j.challengeDispo.Count; i++)
+        {
+            Console.WriteLine("{0}. {1}", i+1, j.challengeDispo[i].nomAfficher);
+        }
+        Console.WriteLine();
+    }
+    public static void afficheChallengesDetaillé(Joueur j)
     {
         for(int i=0; i<j.challengeDispo.Count; i++)
         {
             Console.WriteLine("{0}. {1} ; {2} ; {3}", i+1, j.challengeDispo[i].nomAfficher, j.challengeDispo[i].objectif, j.challengeDispo[i].nbPoint);
         }
+        Console.WriteLine();
     }
     public static Partie initialisationJeu()
     {
@@ -329,5 +382,4 @@ class Yams{
         string ps2 = Console.ReadLine();
         return new Partie(new Joueur(1,ps1),new Joueur(2,ps2),thisDay);
     }
-
 }
