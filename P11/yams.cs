@@ -26,19 +26,25 @@ class Yams{
         public int id;
         public string pseudo;
         public int[] scoreParTour;
-        public string[] challengeParTour;
+        public int[][] desParTour;
         public int totalScoreChallengeMineure;
         public int score;
         public List<int> challengeDispo;
+        public List<int> challengeUtiliser;
         public Joueur(int i, string pse)
         {
             id=i;
             pseudo=pse;
             scoreParTour = new int[13];
-            challengeParTour = new string[13];
+            desParTour = new int[13][];
+            for(int i=0; i<13; i++)
+            {
+                desParTour[i] = new int[5];
+            }
             totalScoreChallengeMineure = 0;
             score = 0;
             challengeDispo = new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+            challengeDispo = new List<int>();
         }
     }
     public struct Partie
@@ -104,6 +110,7 @@ class Yams{
             Console.WriteLine();
         }
         affichageFinPartie(ref game);
+        creaJson(game);
     }
     public static void tour(ref Joueur joueur, int tours){
         Random rnd = new Random();
@@ -131,8 +138,12 @@ class Yams{
         }
         afficheDes(des);
         int codeChallenge = choixChallenge(joueur);
+
+        joueur.challengeUtiliser.Add(codeChallenge);
         supprimeChallenge(joueur.challengeDispo, codeChallenge);
+
         joueur.scoreParTour[tours]=calculScore(ref joueur,des,codeChallenge);
+        joueur.desParTour[tours] = des;
     }
     public static void choixDes(int[] des, bool[] relancerDes)
     {
@@ -190,14 +201,14 @@ class Yams{
             break;
 
             case 10:
-            if(monotonie(des)>3)
+            if(verifPetiteSuite(des))
             {
                 nbPoint = 30;
             }
             break;
 
             case 11:
-            if(monotonie(des) > 4)
+            if(verifGrandeSuite(des))
             {
                 nbPoint = 40;
             }
@@ -260,24 +271,6 @@ class Yams{
             }
         }
     }
-    public static int monotonie(int[] listeInitial)
-    {
-        tri(listeInitial);
-        int cpt=0;
-        int tailleMax=0;
-        for(int i=0;i<listeInitial.Length-1;i++){
-            if(listeInitial[i]<listeInitial[i+1]){
-                cpt++;
-            }
-            else{
-                if(cpt>tailleMax){
-                    tailleMax=cpt;
-                    cpt=0;
-                }
-            }
-        }
-        return tailleMax;
-    }
     public static int verifBrelan(int[] des)
     {
         List<int> nbATester = listeNombreDifferent(des);
@@ -336,6 +329,35 @@ class Yams{
             }
         }
         return 0;
+    }
+    public static bool verifPetiteSuite(int[] des)
+    {
+        // Tri des dés pour faciliter la recherche de séquences
+        tri(des);
+
+        // Retirer les doublons pour éviter les problèmes de séquences incorrectes
+        int[] uniqueDes = des.Distinct().ToArray();
+
+        // Vérifier si l'une des trois petites suites possibles est présente
+        if (uniqueDes.Contains(1) && uniqueDes.Contains(2) && uniqueDes.Contains(3) && uniqueDes.Contains(4)) return true;
+        if (uniqueDes.Contains(2) && uniqueDes.Contains(3) && uniqueDes.Contains(4) && uniqueDes.Contains(5)) return true;
+        if (uniqueDes.Contains(3) && uniqueDes.Contains(4) && uniqueDes.Contains(5) && uniqueDes.Contains(6)) return true;
+
+        return false; // Aucune petite suite détectée
+    }
+    public static bool verifGrandeSuite(int[] des)
+    {
+        // Tri des dés pour faciliter la recherche de séquences
+        tri(des);
+
+        // Retirer les doublons
+        int[] uniqueDes = des.Distinct().ToArray();
+
+        // Vérifier si l'une des deux grandes suites possibles est présente
+        if (uniqueDes.SequenceEqual(new int[] { 1, 2, 3, 4, 5 })) return true;
+        if (uniqueDes.SequenceEqual(new int[] { 2, 3, 4, 5, 6 })) return true;
+
+        return false; // Aucune grande suite détectée
     }
     public static List<int> listeNombreDifferent(int[] des)
     {
@@ -461,5 +483,47 @@ class Yams{
             return 35;
         }
         return 0;
+    }
+    public static void creaJson(Partie game)
+    {
+        string nomJson = game.joueur[0].pseudo +"_"+game.joueur[1].pseudo+".json";
+        FileStream fs = new FileStream(nomJson, FileMode.Create, FileAccess.Write);
+        StreamWriter leFichier = new StreamWriter(fs);
+        leFichier.WriteLine("{");
+        leFichier.WriteLine("   \"parameters\": {");
+        leFichier.WriteLine("       \"code\": \"groupe8-003\",");
+        leFichier.WriteLine("       \"date\": \"{0}\"",game.date);
+        leFichier.WriteLine("   },");
+
+        leFichier.WriteLine("   \"players\": [");
+        leFichier.WriteLine("       {");
+        leFichier.WriteLine("           \"id\": \"{0}\",",game.joueur[0].id);
+        leFichier.WriteLine("           \"pseudo\": \"{0}\"",game.joueur[0].pseudo);
+        leFichier.WriteLine("       },");
+        leFichier.WriteLine("       {")
+        leFichier.WriteLine("           \"id\": \"{0}\",",game.joueur[1].id);
+        leFichier.WriteLine("           \"pseudo\": \"{0}\"",game.joueur[1].pseudo);
+        leFichier.WriteLine("       }");
+        leFichier.WriteLine("   ],");
+
+        leFichier.WriteLine("   \"rounds\": [");
+        for(int i=0; i<13; i++)
+        {
+            leFichier.WriteLine("       {");
+            leFichier.WriteLine("           \"id\": \"{0}\",",i+1);
+            leFichier.WriteLine("           \"results\": [");
+            for(int j=0; j<2; j++)
+            {
+                leFichier.WriteLine("               {");
+                leFichier.WriteLine("                   \"id player\": \"{0}\",",game.joueur[j].id);
+                leFichier.WriteLine("                   \"dice\": [{0},{1},{2},{3},{4}],",game.joueur[j].desParTour[i][0],game.joueur[j].desParTour[i][1],game.joueur[j].desParTour[i][2],game.joueur[j].desParTour[i][3],game.joueur[j].desParTour[i][4],);
+                leFichier.WriteLine("                   \"challenge\": \"{0}\",",game.joueur[j].challengeUtiliser[i]);
+                leFichier.WriteLine("               },");
+            }
+            leFichier.WriteLine("               ]");
+            leFichier.WriteLine("       },");
+        }
+        leFichier.Close();
+
     }
 }
