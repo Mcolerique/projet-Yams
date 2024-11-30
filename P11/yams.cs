@@ -7,13 +7,14 @@ using System.Collections.Generic;
 class Yams{
     public struct Challenge
     {
-        //public int code;
+        public int code;
         public string nom;
         public string nomAfficher;
         public string objectif;
         public string nbPoint;
-        public Challenge(string n, string nA, string o, string nbP)
+        public Challenge(int c, string n, string nA, string o, string nbP)
         {
+            code = c;
             nom = n;
             nomAfficher = nA;
             objectif = o;
@@ -27,7 +28,8 @@ class Yams{
         public int[] scoreParTour;
         public string[] challengeParTour;
         public int totalScoreChallengeMineure;
-        public List<Challenge> challengeDispo;
+        public int score;
+        public List<int> challengeDispo;
         public Joueur(int i, string pse)
         {
             id=i;
@@ -35,25 +37,8 @@ class Yams{
             scoreParTour = new int[13];
             challengeParTour = new string[13];
             totalScoreChallengeMineure = 0;
-            challengeDispo = new List<Challenge>
-                                                {
-                                                    // Challenges mineurs
-                                                    new Challenge("nombre1", "Nombre de 1", "Obtenir le maximum de 1", "Somme des dés ayant obtenu 1"),
-                                                    new Challenge("nombre2", "Nombre de 2", "Obtenir le maximum de 2", "Somme des dés ayant obtenu 2"),
-                                                    new Challenge("nombre3", "Nombre de 3", "Obtenir le maximum de 3", "Somme des dés ayant obtenu 3"),
-                                                    new Challenge("nombre4", "Nombre de 4", "Obtenir le maximum de 4", "Somme des dés ayant obtenu 4"),
-                                                    new Challenge("nombre5", "Nombre de 5", "Obtenir le maximum de 5", "Somme des dés ayant obtenu 5"),
-                                                    new Challenge("nombre6", "Nombre de 6", "Obtenir le maximum de 6", "Somme des dés ayant obtenu 6"),
-
-                                                    // Challenges majeurs
-                                                    new Challenge("brelan", "Brelan", "Obtenir 3 dés de même valeur", "Somme des 3 dés identiques"),
-                                                    new Challenge("carre", "Carré", "Obtenir 4 dés de même valeur", "Somme des 4 dés identiques"),
-                                                    new Challenge("full", "Full", "Obtenir 3 dés de même valeur + 2 dés de même valeur", "25 points"),
-                                                    new Challenge("petite", "Petite suite", "Obtenir 1-2-3-4 ou 2-3-4-5 ou 3-4-5-6", "30 points"),
-                                                    new Challenge("grande", "Grande suite", "Obtenir 1-2-3-4-5 ou 2-3-4-5-6", "40 points"),
-                                                    new Challenge("yams", "Yam's", "Obtenir 5 dés de même valeur", "50 points"),
-                                                    new Challenge("chance", "Chance", "Obtenir le maximum de points", "Le total des dés obtenus")
-                                                };
+            score = 0;
+            challengeDispo = new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         }
     }
     public struct Partie
@@ -81,10 +66,30 @@ class Yams{
             }
         }
     }
+    public static Challenge[] CHALLENGE = new Challenge[]
+                                                {
+                                                    // Challenges mineurs
+                                                    new Challenge(1, "nombre1", "Nombre de 1", "Obtenir le maximum de 1", "Somme des dés ayant obtenu 1"),
+                                                    new Challenge(2,"nombre2", "Nombre de 2", "Obtenir le maximum de 2", "Somme des dés ayant obtenu 2"),
+                                                    new Challenge(3, "nombre3", "Nombre de 3", "Obtenir le maximum de 3", "Somme des dés ayant obtenu 3"),
+                                                    new Challenge(4, "nombre4", "Nombre de 4", "Obtenir le maximum de 4", "Somme des dés ayant obtenu 4"),
+                                                    new Challenge(5, "nombre5", "Nombre de 5", "Obtenir le maximum de 5", "Somme des dés ayant obtenu 5"),
+                                                    new Challenge(6, "nombre6", "Nombre de 6", "Obtenir le maximum de 6", "Somme des dés ayant obtenu 6"),
+
+                                                    // Challenges majeurs
+                                                    new Challenge(7, "brelan", "Brelan", "Obtenir 3 dés de même valeur", "Somme des 3 dés identiques"),
+                                                    new Challenge(8, "carre", "Carré", "Obtenir 4 dés de même valeur", "Somme des 4 dés identiques"),
+                                                    new Challenge(9, "full", "Full", "Obtenir 3 dés de même valeur + 2 dés de même valeur", "25 points"),
+                                                    new Challenge(10, "petite", "Petite suite", "Obtenir 1-2-3-4 ou 2-3-4-5 ou 3-4-5-6", "30 points"),
+                                                    new Challenge(11, "grande", "Grande suite", "Obtenir 1-2-3-4-5 ou 2-3-4-5-6", "40 points"),
+                                                    new Challenge(12, "yams", "Yam's", "Obtenir 5 dés de même valeur", "50 points"),
+                                                    new Challenge(13, "chance", "Chance", "Obtenir le maximum de points", "Le total des dés obtenus")
+                                                };
     public static void jeu(){
         Partie game = initialisationJeu();
         for(int i=0; i<13; i++)
         {
+            Console.WriteLine();
             Console.WriteLine("Tour {0}",i+1);
             Console.WriteLine();
 
@@ -98,6 +103,7 @@ class Yams{
             Console.WriteLine("Vous avez gagné {0} points",game.joueur[1].scoreParTour[i]);
             Console.WriteLine();
         }
+        affichageFinPartie(ref game);
     }
     public static void tour(ref Joueur joueur, int tours){
         Random rnd = new Random();
@@ -112,17 +118,21 @@ class Yams{
             {
                 if(relancerDes[j]==true)
                 {
-                    des[j]=rnd.Next(1,6);
-                    Thread.Sleep(50);
+                    des[j]=rnd.Next(1,7);
+                    Thread.Sleep(500);
                 }
             }
-            choixDes(des,relancerDes);
+            if(i<2)
+            {
+                choixDes(des,relancerDes);
+            }
             fin = finRelance(relancerDes);
             i++;
         }
-        int index = choixChallenge(joueur);
-        joueur.scoreParTour[tours]=calculScore(ref joueur,des,index-1);
-        joueur.challengeDispo.RemoveAt(index-1);
+        afficheDes(des);
+        int codeChallenge = choixChallenge(joueur);
+        supprimeChallenge(joueur.challengeDispo, codeChallenge);
+        joueur.scoreParTour[tours]=calculScore(ref joueur,des,codeChallenge);
     }
     public static void choixDes(int[] des, bool[] relancerDes)
     {
@@ -156,66 +166,54 @@ class Yams{
         }
         return true;
     }
-    public static int calculScore(ref Joueur j, int[] des, int indexChallenge)
+    public static int calculScore(ref Joueur j, int[] des, int codeChallenge)
     {
         int nbPoint=0;
-        switch(j.challengeDispo[indexChallenge].nom)
+        if(codeChallenge <= 6)
         {
-            case "nombre1":
-            nbPoint = 1*nbOcc(des,1);
-            j.totalScoreChallengeMineure+=nbPoint;
-            break;
-
-            case "nombre2":
-            nbPoint = 2*nbOcc(des,2);
-            j.totalScoreChallengeMineure+=nbPoint;
-            break;
-            case "nombre3":
-            nbPoint = 3*nbOcc(des,3);
-            j.totalScoreChallengeMineure+=nbPoint;
-            break;
-            case "nombre4":
-            nbPoint = 4*nbOcc(des,4);
-            j.totalScoreChallengeMineure+=nbPoint;
-            break;
-            case "nombre5":
-            nbPoint = 5*nbOcc(des,5);
-            j.totalScoreChallengeMineure+=nbPoint;
-            break;
-            case "nombre6":
-            nbPoint = 6*nbOcc(des,6);
-            j.totalScoreChallengeMineure+=nbPoint;
-            break;
-            case "brelan":
+            nbPoint = codeChallenge * nbOcc(des,codeChallenge);
+            j.totalScoreChallengeMineure += nbPoint;
+            return nbPoint;
+        }
+        switch(codeChallenge)
+        {
+            case 7:
             nbPoint = verifBrelan(des);
             break;
-            case "carre":
+
+            case 8:
             nbPoint = verifCarre(des);
             break;
-            case "full":
+
+            case 9:
             nbPoint = verifFull(des);
             break;
-            case "petite":
-            if()
+
+            case 10:
+            if(monotonie(des)>3)
             {
                 nbPoint = 30;
             }
             break;
-            case "grande":
-            if()
+
+            case 11:
+            if(monotonie(des) > 4)
             {
                 nbPoint = 40;
             }
             break;
-            case "yams":
+
+            case 12:
             if(nbOcc(des,des[0])==5)
             {
                 nbPoint=50;
             }
             break;
-            case "chance":
+
+            case 13:
             nbPoint = somme(des);
             break;
+
             default:
             Console.WriteLine("ya une erreur la mon reuf");
             break;
@@ -243,8 +241,28 @@ class Yams{
         }
         return somme;
     }
+    public static void echange(int[] t,int i, int j  )
+    {
+        int sauv = t[j];
+        t[j]=t[i];
+        t[i]=sauv;
+    }
+    public static void tri(int[] t)
+    {
+        for(int i=0;i<t.Length;i++)
+        {
+            for(int j=i+1;j<t.Length;j++)
+            {
+                if(t[i]>t[j])
+                {
+                    echange(t,i,j); 
+                }
+            }
+        }
+    }
     public static int monotonie(int[] listeInitial)
     {
+        tri(listeInitial);
         int cpt=0;
         int tailleMax=0;
         for(int i=0;i<listeInitial.Length-1;i++){
@@ -333,19 +351,51 @@ class Yams{
     }
     public static int choixChallenge(Joueur j)
     {
+        bool choixValide = false;
+        int choix = 0;
         afficheChallenges(j);
         Console.WriteLine("Quel challenge voulez vous choisir ?");
-        int choix = int.Parse(Console.ReadLine());
-        Console.WriteLine();
-        if(choix==0)
+
+        while(!choixValide)
         {
-            afficheChallengesDetaillé(j);
-            Console.WriteLine("Quel challenge voulez vous choisir ?");
-            return int.Parse(Console.ReadLine());
+            choix = int.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            if(choix==0)
+            {
+                afficheChallengesDetaillé(j);
+                Console.WriteLine("Quel challenge voulez vous choisir ?");
+                choix = int.Parse(Console.ReadLine());
+                if(!j.challengeDispo.Contains(choix))
+                {
+                    Console.WriteLine("Veullez choisir un challenge valide");
+                }
+                else
+                {
+                    choixValide = true;
+                    return choix;
+                }  
+            }
+            else if(!j.challengeDispo.Contains(choix))
+            {
+                Console.WriteLine("Veullez choisir un challenge valide");
+            }
+            else
+            {
+                choixValide = true;
+                return choix;
+            }  
         }
-        else
+        return choix;
+    }
+    public static void supprimeChallenge(List<int> challenge, int choix)
+    {
+        for(int i=0; i<challenge.Count; i++)
         {
-            return choix;
+            if(challenge[i]==choix)
+            {
+                challenge.RemoveAt(i);
+            }
         }
     }
     public static void afficheDes(int[] des)
@@ -361,7 +411,7 @@ class Yams{
         Console.WriteLine("0. Description des challenges");
         for(int i=0; i<j.challengeDispo.Count; i++)
         {
-            Console.WriteLine("{0}. {1}", i+1, j.challengeDispo[i].nomAfficher);
+            Console.WriteLine("{0}. {1}", j.challengeDispo[i], CHALLENGE[j.challengeDispo[i]-1].nomAfficher);
         }
         Console.WriteLine();
     }
@@ -369,7 +419,7 @@ class Yams{
     {
         for(int i=0; i<j.challengeDispo.Count; i++)
         {
-            Console.WriteLine("{0}. {1} ; {2} ; {3}", i+1, j.challengeDispo[i].nomAfficher, j.challengeDispo[i].objectif, j.challengeDispo[i].nbPoint);
+            Console.WriteLine("{0}. {1} ; {2} ; {3}", j.challengeDispo[i], CHALLENGE[j.challengeDispo[i]-1].nomAfficher, CHALLENGE[j.challengeDispo[i]-1].objectif, CHALLENGE[j.challengeDispo[i]-1].nbPoint);
         }
         Console.WriteLine();
     }
@@ -381,5 +431,35 @@ class Yams{
         Console.Write("Entrez le pseudo du joueur 2 : ");
         string ps2 = Console.ReadLine();
         return new Partie(new Joueur(1,ps1),new Joueur(2,ps2),thisDay);
+    }
+    public static void affichageFinPartie(ref Partie game)
+    {
+        game.joueur[0].score = somme(game.joueur[0].scoreParTour);
+        game.joueur[1].score = somme(game.joueur[1].scoreParTour);
+
+        Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",game.joueur[0].pseudo,game.joueur[0].score,verifBonus(game.joueur[0].totalScoreChallengeMineure),game.joueur[0].score + verifBonus(game.joueur[0].totalScoreChallengeMineure));
+        Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",game.joueur[1].pseudo,game.joueur[1].score,verifBonus(game.joueur[1].totalScoreChallengeMineure),game.joueur[1].score + verifBonus(game.joueur[1].totalScoreChallengeMineure));
+        Console.WriteLine();
+
+        if((game.joueur[0].score + verifBonus(game.joueur[0].totalScoreChallengeMineure)) < (game.joueur[1].score + verifBonus(game.joueur[1].totalScoreChallengeMineure)))
+        {
+            Console.WriteLine("Victoire de {0}",game.joueur[1].pseudo);
+        }
+        else if(game.joueur[0].score + verifBonus(game.joueur[0].totalScoreChallengeMineure) > game.joueur[1].score + verifBonus(game.joueur[1].totalScoreChallengeMineure))
+        {
+            Console.WriteLine("Victoire de {0}",game.joueur[0].pseudo);
+        }
+        else
+        {
+            Console.WriteLine("Egalité");
+        }
+    }
+    public static int verifBonus(int scoreChallengeMineure)
+    {
+        if(scoreChallengeMineure >= 63)
+        {
+            return 35;
+        }
+        return 0;
     }
 }
