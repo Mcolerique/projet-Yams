@@ -27,8 +27,8 @@ class Yams{
         public string pseudo;
         public int[] scoreParTour;
         public int[][] desParTour;
-        public int totalScoreChallengeMineure;
         public int score;
+        public int bonus;
         public List<int> challengeDispo;
         public List<int> challengeUtiliser;
         public Joueur(int i, string pse)
@@ -37,14 +37,15 @@ class Yams{
             pseudo=pse;
             scoreParTour = new int[13];
             desParTour = new int[13][];
-            for(int i=0; i<13; i++)
+            /*
+            for(int j=0; j<13; j++)
             {
                 desParTour[i] = new int[5];
-            }
-            totalScoreChallengeMineure = 0;
+            }*/
+            bonus = 0;
             score = 0;
             challengeDispo = new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-            challengeDispo = new List<int>();
+            challengeUtiliser = new List<int>();
         }
     }
     public struct Partie
@@ -183,7 +184,6 @@ class Yams{
         if(codeChallenge <= 6)
         {
             nbPoint = codeChallenge * nbOcc(des,codeChallenge);
-            j.totalScoreChallengeMineure += nbPoint;
             return nbPoint;
         }
         switch(codeChallenge)
@@ -458,16 +458,18 @@ class Yams{
     {
         game.joueur[0].score = somme(game.joueur[0].scoreParTour);
         game.joueur[1].score = somme(game.joueur[1].scoreParTour);
+        game.joueur[0].bonus = verifBonus(game.joueur[0]);
+        game.joueur[1].bonus = verifBonus(game.joueur[1]);
 
-        Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",game.joueur[0].pseudo,game.joueur[0].score,verifBonus(game.joueur[0].totalScoreChallengeMineure),game.joueur[0].score + verifBonus(game.joueur[0].totalScoreChallengeMineure));
-        Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",game.joueur[1].pseudo,game.joueur[1].score,verifBonus(game.joueur[1].totalScoreChallengeMineure),game.joueur[1].score + verifBonus(game.joueur[1].totalScoreChallengeMineure));
+        Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",game.joueur[0].pseudo,game.joueur[0].score, game.joueur[0].bonus,game.joueur[0].score + game.joueur[0].bonus);
+        Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",game.joueur[1].pseudo,game.joueur[1].score, game.joueur[1].bonus,game.joueur[1].score + game.joueur[1].bonus);
         Console.WriteLine();
 
-        if((game.joueur[0].score + verifBonus(game.joueur[0].totalScoreChallengeMineure)) < (game.joueur[1].score + verifBonus(game.joueur[1].totalScoreChallengeMineure)))
+        if((game.joueur[0].score + game.joueur[0].bonus) < (game.joueur[1].score + game.joueur[1].bonus))
         {
             Console.WriteLine("Victoire de {0}",game.joueur[1].pseudo);
         }
-        else if(game.joueur[0].score + verifBonus(game.joueur[0].totalScoreChallengeMineure) > game.joueur[1].score + verifBonus(game.joueur[1].totalScoreChallengeMineure))
+        else if((game.joueur[0].score + game.joueur[0].bonus) > (game.joueur[1].score + game.joueur[1].bonus))
         {
             Console.WriteLine("Victoire de {0}",game.joueur[0].pseudo);
         }
@@ -475,9 +477,18 @@ class Yams{
         {
             Console.WriteLine("Egalité");
         }
+        Console.WriteLine();
     }
-    public static int verifBonus(int scoreChallengeMineure)
+    public static int verifBonus(Joueur j)
     {
+        int scoreChallengeMineure=0;
+        for(int i=0; i<j.challengeUtiliser.Count; i++)
+        {
+            if(j.challengeUtiliser[i]<=6)
+            {
+                scoreChallengeMineure += j.scoreParTour[i];
+            }
+        }
         if(scoreChallengeMineure >= 63)
         {
             return 35;
@@ -486,43 +497,57 @@ class Yams{
     }
     public static void creaJson(Partie game)
     {
-        string nomJson = game.joueur[0].pseudo +"_"+game.joueur[1].pseudo+".json";
+        string nomJson = game.joueur[0].pseudo +"_"+game.joueur[1].pseudo+"_"+game.date+".json";
         FileStream fs = new FileStream(nomJson, FileMode.Create, FileAccess.Write);
         StreamWriter leFichier = new StreamWriter(fs);
+
         leFichier.WriteLine("{");
         leFichier.WriteLine("   \"parameters\": {");
         leFichier.WriteLine("       \"code\": \"groupe8-003\",");
-        leFichier.WriteLine("       \"date\": \"{0}\"",game.date);
+        leFichier.WriteLine($"       \"date\": \"{game.date}\"");
         leFichier.WriteLine("   },");
 
         leFichier.WriteLine("   \"players\": [");
-        leFichier.WriteLine("       {");
-        leFichier.WriteLine("           \"id\": \"{0}\",",game.joueur[0].id);
-        leFichier.WriteLine("           \"pseudo\": \"{0}\"",game.joueur[0].pseudo);
-        leFichier.WriteLine("       },");
-        leFichier.WriteLine("       {")
-        leFichier.WriteLine("           \"id\": \"{0}\",",game.joueur[1].id);
-        leFichier.WriteLine("           \"pseudo\": \"{0}\"",game.joueur[1].pseudo);
-        leFichier.WriteLine("       }");
+        for (int i = 0; i < game.joueur.Length; i++)
+        {
+            leFichier.WriteLine("       {");
+            leFichier.WriteLine($"           \"id\": \"{game.joueur[i].id}\",");
+            leFichier.WriteLine($"           \"pseudo\": \"{game.joueur[i].pseudo}\"");
+            leFichier.WriteLine(i == game.joueur.Length - 1 ? "       }" : "       },");
+        }
         leFichier.WriteLine("   ],");
 
         leFichier.WriteLine("   \"rounds\": [");
-        for(int i=0; i<13; i++)
+        for (int i = 0; i < game.joueur[0].scoreParTour.Length; i++)
         {
             leFichier.WriteLine("       {");
-            leFichier.WriteLine("           \"id\": \"{0}\",",i+1);
+            leFichier.WriteLine($"           \"id\": \"{i + 1}\",");
             leFichier.WriteLine("           \"results\": [");
-            for(int j=0; j<2; j++)
+            for (int j = 0; j < game.joueur.Length; j++)
             {
                 leFichier.WriteLine("               {");
-                leFichier.WriteLine("                   \"id player\": \"{0}\",",game.joueur[j].id);
-                leFichier.WriteLine("                   \"dice\": [{0},{1},{2},{3},{4}],",game.joueur[j].desParTour[i][0],game.joueur[j].desParTour[i][1],game.joueur[j].desParTour[i][2],game.joueur[j].desParTour[i][3],game.joueur[j].desParTour[i][4],);
-                leFichier.WriteLine("                   \"challenge\": \"{0}\",",game.joueur[j].challengeUtiliser[i]);
-                leFichier.WriteLine("               },");
+                leFichier.WriteLine($"                   \"id_player\": \"{game.joueur[j].id}\",");
+                leFichier.WriteLine($"                   \"dice\": [{string.Join(",", game.joueur[j].desParTour[i])}],");
+                leFichier.WriteLine($"                   \"challenge\": \"{CHALLENGE[game.joueur[j].challengeUtiliser[i]-1]}\"");
+                leFichier.WriteLine(j == game.joueur.Length - 1 ? "               }" : "               },");
             }
-            leFichier.WriteLine("               ]");
-            leFichier.WriteLine("       },");
+            leFichier.WriteLine("           ]");
+            leFichier.WriteLine(i == game.joueur[0].scoreParTour.Length - 1 ? "       }" : "       },");
         }
+        leFichier.WriteLine("   ],");
+
+        leFichier.WriteLine("   \"final_result\": [");
+        for (int i = 0; i < game.joueur.Length; i++)
+        {
+            leFichier.WriteLine("       {");
+            leFichier.WriteLine($"           \"id_player\": \"{game.joueur[i].id}\",");
+            leFichier.WriteLine($"           \"bonus\": {game.joueur[i].bonus},");
+            leFichier.WriteLine($"           \"score\": \"{game.joueur[i].score}\"");
+            leFichier.WriteLine(i == game.joueur.Length - 1 ? "       }" : "       },");
+        }
+        leFichier.WriteLine("   ]");
+        leFichier.WriteLine("}");
+
         leFichier.Close();
 
     }
