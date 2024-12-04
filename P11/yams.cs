@@ -528,7 +528,7 @@ class Yams{
                 leFichier.WriteLine("               {");
                 leFichier.WriteLine($"                   \"id_player\": \"{game.joueur[j].id}\",");
                 leFichier.WriteLine($"                   \"dice\": [{string.Join(",", game.joueur[j].desParTour[i])}],");
-                leFichier.WriteLine($"                   \"challenge\": \"{CHALLENGE[game.joueur[j].challengeUtiliser[i]-1]}\"");
+                leFichier.WriteLine($"                   \"challenge\": \"{CHALLENGE[game.joueur[j].challengeUtiliser[i]-1].nom}\"");
                 leFichier.WriteLine(j == game.joueur.Length - 1 ? "               }" : "               },");
             }
             leFichier.WriteLine("           ]");
