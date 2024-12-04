@@ -511,7 +511,7 @@ class Yams{
         for (int i = 0; i < game.joueur.Length; i++)
         {
             leFichier.WriteLine("       {");
-            leFichier.WriteLine($"           \"id\": \"{game.joueur[i].id}\",");
+            leFichier.WriteLine($"           \"id\": {game.joueur[i].id},");
             leFichier.WriteLine($"           \"pseudo\": \"{game.joueur[i].pseudo}\"");
             leFichier.WriteLine(i == game.joueur.Length - 1 ? "       }" : "       },");
         }
@@ -521,14 +521,15 @@ class Yams{
         for (int i = 0; i < game.joueur[0].scoreParTour.Length; i++)
         {
             leFichier.WriteLine("       {");
-            leFichier.WriteLine($"           \"id\": \"{i + 1}\",");
+            leFichier.WriteLine($"           \"id\": {i + 1},");
             leFichier.WriteLine("           \"results\": [");
             for (int j = 0; j < game.joueur.Length; j++)
             {
                 leFichier.WriteLine("               {");
-                leFichier.WriteLine($"                   \"id_player\": \"{game.joueur[j].id}\",");
+                leFichier.WriteLine($"                   \"id_player\": {game.joueur[j].id},");
                 leFichier.WriteLine($"                   \"dice\": [{string.Join(",", game.joueur[j].desParTour[i])}],");
                 leFichier.WriteLine($"                   \"challenge\": \"{CHALLENGE[game.joueur[j].challengeUtiliser[i]-1].nom}\"");
+                leFichier.WriteLine($"                   \"score\": {game.joueur[j].scoreParTour[i]}");
                 leFichier.WriteLine(j == game.joueur.Length - 1 ? "               }" : "               },");
             }
             leFichier.WriteLine("           ]");
@@ -542,7 +543,7 @@ class Yams{
             leFichier.WriteLine("       {");
             leFichier.WriteLine($"           \"id_player\": \"{game.joueur[i].id}\",");
             leFichier.WriteLine($"           \"bonus\": {game.joueur[i].bonus},");
-            leFichier.WriteLine($"           \"score\": \"{game.joueur[i].score}\"");
+            leFichier.WriteLine($"           \"score\": {(game.joueur[i].score + game.joueur[i].bonus)}");
             leFichier.WriteLine(i == game.joueur.Length - 1 ? "       }" : "       },");
         }
         leFichier.WriteLine("   ]");
