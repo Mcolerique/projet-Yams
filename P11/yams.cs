@@ -37,11 +37,6 @@ class Yams{
             pseudo=pse;
             scoreParTour = new int[13];
             desParTour = new int[13][];
-            /*
-            for(int j=0; j<13; j++)
-            {
-                desParTour[i] = new int[5];
-            }*/
             bonus = 0;
             score = 0;
             challengeDispo = new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
@@ -58,19 +53,6 @@ class Yams{
             joueur = new Joueur[2] {j1,j2};
             tours=1;
             date=d.ToString("yyyy-MM-dd");
-        }
-    }
-    static void Main()
-    {
-        bool encoreJouer=true;
-        while(encoreJouer)
-        {
-            jeu();
-            Console.WriteLine("Voulez vous relancer une partie ? o/n");
-            if(Console.ReadLine()=="n")
-            {
-                encoreJouer=false;
-            }
         }
     }
     public static Challenge[] CHALLENGE = new Challenge[]
@@ -92,23 +74,38 @@ class Yams{
                                                     new Challenge(12, "yams", "Yam's", "Obtenir 5 dés de même valeur", "50 points"),
                                                     new Challenge(13, "chance", "Chance", "Obtenir le maximum de points", "Le total des dés obtenus")
                                                 };
+    static void Main()
+    {
+        bool encoreJouer=true;
+        while(encoreJouer)
+        {
+            jeu();
+            Console.WriteLine("Voulez vous relancer une partie ? o/n");
+            if(Console.ReadLine()=="n")
+            {
+                encoreJouer=false;
+            }
+        }
+    }
     public static void jeu(){
         Partie game = initialisationJeu();
         for(int i=0; i<13; i++)
         {
             Console.WriteLine();
-            Console.WriteLine("Tour {0}",i+1);
+            Console.WriteLine($"Tour n°{i+1}");
             Console.WriteLine();
 
-            Console.WriteLine("Tour de {0} :", game.joueur[0].pseudo);
-            tour(ref game.joueur[0],i);
-            Console.WriteLine("Vous avez gagné {0} points",game.joueur[0].scoreParTour[i]);
-            Console.WriteLine();
-
-            Console.WriteLine("Tour de {0} :", game.joueur[1].pseudo);
-            tour(ref game.joueur[1],i);
-            Console.WriteLine("Vous avez gagné {0} points",game.joueur[1].scoreParTour[i]);
-            Console.WriteLine();
+            for(int j=0; j<game.joueur.Length; j++)
+            {
+                Console.WriteLine($"Tour de {game.joueur[j].pseudo} :");
+                tour(ref game.joueur[j],i);
+                Console.WriteLine($"vous avez choisi le challenge \"{CHALLENGE[game.joueur[j].challengeUtiliser[i]-1].nomAfficher}\"");
+                Console.WriteLine("vous aviez les des suivant : ");
+                afficheDes(game.joueur[j].desParTour[i]);
+                Console.WriteLine($"Vous avez gagné {game.joueur[j].scoreParTour[i]} points");
+                Console.WriteLine($"Pour l'instant vous avez un total de {somme(game.joueur[j].scoreParTour)} point + {verifBonus(game.joueur[0])} bonus");
+                Console.WriteLine();
+            }
         }
         affichageFinPartie(ref game);
         creaJson(game);
@@ -528,7 +525,7 @@ class Yams{
                 leFichier.WriteLine("               {");
                 leFichier.WriteLine($"                   \"id_player\": {game.joueur[j].id},");
                 leFichier.WriteLine($"                   \"dice\": [{string.Join(",", game.joueur[j].desParTour[i])}],");
-                leFichier.WriteLine($"                   \"challenge\": \"{CHALLENGE[game.joueur[j].challengeUtiliser[i]-1].nom}\"");
+                leFichier.WriteLine($"                   \"challenge\": \"{CHALLENGE[game.joueur[j].challengeUtiliser[i]-1].nom}\",");
                 leFichier.WriteLine($"                   \"score\": {game.joueur[j].scoreParTour[i]}");
                 leFichier.WriteLine(j == game.joueur.Length - 1 ? "               }" : "               },");
             }
