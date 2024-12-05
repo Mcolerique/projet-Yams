@@ -43,18 +43,6 @@ class Yams{
             challengeUtiliser = new List<int>();
         }
     }
-    public struct Partie
-    {
-        public Joueur[] joueur;
-        public int tours;
-        public string date;
-        public Partie(Joueur j1, Joueur j2, DateTime d)
-        {
-            joueur = new Joueur[2] {j1,j2};
-            tours=1;
-            date=d.ToString("yyyy-MM-dd");
-        }
-    }
     public static Challenge[] CHALLENGE = new Challenge[]
                                                 {
                                                     // Challenges mineurs
@@ -88,27 +76,27 @@ class Yams{
         }
     }
     public static void jeu(){
-        Partie game = initialisationJeu();
+        Joueur[] joueur = initialisationJeu();
         for(int i=0; i<13; i++)
         {
             Console.WriteLine();
             Console.WriteLine($"Tour n°{i+1}");
             Console.WriteLine();
 
-            for(int j=0; j<game.joueur.Length; j++)
+            for(int j=0; j<joueur.Length; j++)
             {
-                Console.WriteLine($"Tour de {game.joueur[j].pseudo} :");
-                tour(ref game.joueur[j],i);
-                Console.WriteLine($"vous avez choisi le challenge \"{CHALLENGE[game.joueur[j].challengeUtiliser[i]-1].nomAfficher}\"");
+                Console.WriteLine($"Tour de {joueur[j].pseudo} :");
+                tour(ref joueur[j],i);
+                Console.WriteLine($"vous avez choisi le challenge \"{CHALLENGE[joueur[j].challengeUtiliser[i]-1].nomAfficher}\"");
                 Console.WriteLine("vous aviez les des suivant : ");
-                afficheDes(game.joueur[j].desParTour[i]);
-                Console.WriteLine($"Vous avez gagné {game.joueur[j].scoreParTour[i]} points");
-                Console.WriteLine($"Pour l'instant vous avez un total de {somme(game.joueur[j].scoreParTour)} point + {verifBonus(game.joueur[0])} bonus");
+                afficheDes(joueur[j].desParTour[i]);
+                Console.WriteLine($"Vous avez gagné {joueur[j].scoreParTour[i]} points");
+                Console.WriteLine($"Pour l'instant vous avez un total de {somme(joueur[j].scoreParTour)} point + {verifBonus(joueur[0])} bonus");
                 Console.WriteLine();
             }
         }
-        affichageFinPartie(ref game);
-        creaJson(game);
+        affichageFinPartie(ref joueur);
+        creaJson(joueur);
     }
     public static void tour(ref Joueur joueur, int tours){
         Random rnd = new Random();
@@ -442,33 +430,34 @@ class Yams{
         }
         Console.WriteLine();
     }
-    public static Partie initialisationJeu()
+    public static Joueur[] initialisationJeu()
     {
-        DateTime thisDay = DateTime.Today;
+        Joueur[] j = new Joueur[2];
         Console.Write("Entrez le pseudo du joueur 1 : ");
         string ps1 = Console.ReadLine();
         Console.Write("Entrez le pseudo du joueur 2 : ");
         string ps2 = Console.ReadLine();
-        return new Partie(new Joueur(1,ps1),new Joueur(2,ps2),thisDay);
+        j[0] = new Joueur(1,ps1);
+        j[1] = new Joueur(2,ps2);
+        return j;
     }
-    public static void affichageFinPartie(ref Partie game)
+    public static void affichageFinPartie(ref Joueur[] joueur)
     {
-        game.joueur[0].score = somme(game.joueur[0].scoreParTour);
-        game.joueur[1].score = somme(game.joueur[1].scoreParTour);
-        game.joueur[0].bonus = verifBonus(game.joueur[0]);
-        game.joueur[1].bonus = verifBonus(game.joueur[1]);
-
-        Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",game.joueur[0].pseudo,game.joueur[0].score, game.joueur[0].bonus,game.joueur[0].score + game.joueur[0].bonus);
-        Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",game.joueur[1].pseudo,game.joueur[1].score, game.joueur[1].bonus,game.joueur[1].score + game.joueur[1].bonus);
-        Console.WriteLine();
-
-        if((game.joueur[0].score + game.joueur[0].bonus) < (game.joueur[1].score + game.joueur[1].bonus))
+        for(int i = 0; i<joueur.Length; i++)
         {
-            Console.WriteLine("Victoire de {0}",game.joueur[1].pseudo);
+            joueur[i].score = somme(joueur[i].scoreParTour);
+            joueur[i].bonus = verifBonus(joueur[i]);
+            Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",joueur[i].pseudo,joueur[i].score, joueur[i].bonus,joueur[i].score + joueur[i].bonus);
+            Console.WriteLine();
         }
-        else if((game.joueur[0].score + game.joueur[0].bonus) > (game.joueur[1].score + game.joueur[1].bonus))
+
+        if((joueur[0].score + joueur[0].bonus) < (joueur[1].score + joueur[1].bonus))
         {
-            Console.WriteLine("Victoire de {0}",game.joueur[0].pseudo);
+            Console.WriteLine("Victoire de {0}",joueur[1].pseudo);
+        }
+        else if((joueur[0].score + joueur[0].bonus) > (joueur[1].score + joueur[1].bonus))
+        {
+            Console.WriteLine("Victoire de {0}",joueur[0].pseudo);
         }
         else
         {
@@ -492,61 +481,61 @@ class Yams{
         }
         return 0;
     }
-    public static void creaJson(Partie game)
+    public static void creaJson(Joueur[] joueur)
     {
-        string nomJson = game.joueur[0].pseudo +"_"+game.joueur[1].pseudo+"_"+game.date+".json";
+        string date = DateTime.Today.ToString("yyyy-MM-dd");
+        string nomJson = joueur[0].pseudo +"_"+joueur[1].pseudo+"_"+date+".json";
         FileStream fs = new FileStream(nomJson, FileMode.Create, FileAccess.Write);
         StreamWriter leFichier = new StreamWriter(fs);
 
         leFichier.WriteLine("{");
         leFichier.WriteLine("   \"parameters\": {");
         leFichier.WriteLine("       \"code\": \"groupe8-003\",");
-        leFichier.WriteLine($"       \"date\": \"{game.date}\"");
+        leFichier.WriteLine($"       \"date\": \"{date}\"");
         leFichier.WriteLine("   },");
 
         leFichier.WriteLine("   \"players\": [");
-        for (int i = 0; i < game.joueur.Length; i++)
+        for (int i = 0; i < joueur.Length; i++)
         {
             leFichier.WriteLine("       {");
-            leFichier.WriteLine($"           \"id\": {game.joueur[i].id},");
-            leFichier.WriteLine($"           \"pseudo\": \"{game.joueur[i].pseudo}\"");
-            leFichier.WriteLine(i == game.joueur.Length - 1 ? "       }" : "       },");
+            leFichier.WriteLine($"           \"id\": {joueur[i].id},");
+            leFichier.WriteLine($"           \"pseudo\": \"{joueur[i].pseudo}\"");
+            leFichier.WriteLine(i == joueur.Length - 1 ? "       }" : "       },");
         }
         leFichier.WriteLine("   ],");
 
         leFichier.WriteLine("   \"rounds\": [");
-        for (int i = 0; i < game.joueur[0].scoreParTour.Length; i++)
+        for (int i = 0; i < joueur[0].scoreParTour.Length; i++)
         {
             leFichier.WriteLine("       {");
             leFichier.WriteLine($"           \"id\": {i + 1},");
             leFichier.WriteLine("           \"results\": [");
-            for (int j = 0; j < game.joueur.Length; j++)
+            for (int j = 0; j < joueur.Length; j++)
             {
                 leFichier.WriteLine("               {");
-                leFichier.WriteLine($"                   \"id_player\": {game.joueur[j].id},");
-                leFichier.WriteLine($"                   \"dice\": [{string.Join(",", game.joueur[j].desParTour[i])}],");
-                leFichier.WriteLine($"                   \"challenge\": \"{CHALLENGE[game.joueur[j].challengeUtiliser[i]-1].nom}\",");
-                leFichier.WriteLine($"                   \"score\": {game.joueur[j].scoreParTour[i]}");
-                leFichier.WriteLine(j == game.joueur.Length - 1 ? "               }" : "               },");
+                leFichier.WriteLine($"                   \"id_player\": {joueur[j].id},");
+                leFichier.WriteLine($"                   \"dice\": [{string.Join(",", joueur[j].desParTour[i])}],");
+                leFichier.WriteLine($"                   \"challenge\": \"{CHALLENGE[joueur[j].challengeUtiliser[i]-1].nom}\",");
+                leFichier.WriteLine($"                   \"score\": {joueur[j].scoreParTour[i]}");
+                leFichier.WriteLine(j == joueur.Length - 1 ? "               }" : "               },");
             }
             leFichier.WriteLine("           ]");
-            leFichier.WriteLine(i == game.joueur[0].scoreParTour.Length - 1 ? "       }" : "       },");
+            leFichier.WriteLine(i == joueur[0].scoreParTour.Length - 1 ? "       }" : "       },");
         }
         leFichier.WriteLine("   ],");
 
         leFichier.WriteLine("   \"final_result\": [");
-        for (int i = 0; i < game.joueur.Length; i++)
+        for (int i = 0; i < joueur.Length; i++)
         {
             leFichier.WriteLine("       {");
-            leFichier.WriteLine($"           \"id_player\": \"{game.joueur[i].id}\",");
-            leFichier.WriteLine($"           \"bonus\": {game.joueur[i].bonus},");
-            leFichier.WriteLine($"           \"score\": {(game.joueur[i].score + game.joueur[i].bonus)}");
-            leFichier.WriteLine(i == game.joueur.Length - 1 ? "       }" : "       },");
+            leFichier.WriteLine($"           \"id_player\": \"{joueur[i].id}\",");
+            leFichier.WriteLine($"           \"bonus\": {joueur[i].bonus},");
+            leFichier.WriteLine($"           \"score\": {(joueur[i].score + joueur[i].bonus)}");
+            leFichier.WriteLine(i == joueur.Length - 1 ? "       }" : "       },");
         }
         leFichier.WriteLine("   ]");
         leFichier.WriteLine("}");
 
         leFichier.Close();
-
     }
 }
