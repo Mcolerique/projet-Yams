@@ -1,10 +1,12 @@
-const apiUrl = 'http://yams.iutrs.unistra.fr:3000/api/games/kl3r67pybl/rounds/';
+//DECLARATION DES VARIABLES ET DES CONSTANTES   
+let currentRound = 1;
+const apiUrl = 'http://yams.iutrs.unistra.fr:3000/api/games/kl3r67pybl/';
 
 
 
-//Fonction de requete a l'API
+//FONCTION REQUETE API POUR DETAILS TOUR PAR TOUR
 
-async function APIrequest(player, round){
+async function roundDetails(player, round){
 
     //Selection des balises ou seront affichees les donnees renvoyees par l'API
     const currentRound = document.getElementById('ntour')
@@ -13,11 +15,11 @@ async function APIrequest(player, round){
     const playerScore = document.getElementById('player' + player + 'Score');
 
     //Requete a l'API
-    const response = await fetch(apiUrl + round);
+    const response = await fetch(apiUrl + 'rounds/' + round);
 
     //Check des erreurs
     if(!response.ok){
-        alert('Erreur de récupération des données : ${response.status}');
+        alert('Erreur de récupération des données : ' + response.status);
 
     }
 
@@ -25,18 +27,59 @@ async function APIrequest(player, round){
     const data = await response.json();
     const playerDatas = data.results[player];
 
+    //Stockage des donnes utilisees
+    const idTour = data.id;
+    let dice = playerDatas.dice;
+    const challenges = playerDatas.challenge;
+    const score = playerDatas.score;
+
     //Affichage des donnes sur la page web (details)
-    currentRound.textContent = JSON.stringify('Tour n°' + data.id);
-    playerDices.textContent = JSON.stringify(playerDatas.dice);
-    playerChallenge.textContent = JSON.stringify(playerDatas.challenge);
-    playerScore.textContent = JSON.stringify(playerDatas.score);
-
-
-
+    currentRound.textContent = 'Tour n°' + idTour;
+    playerDices.textContent = dice;
+    playerChallenge.textContent = challenges;
+    playerScore.textContent = score + ' pts';
 
 
 
 }
 
-APIrequest(0, 1);
-APIrequest(1, 1);
+//FONCTIONS CHANGEMENT DE TOUR
+
+function previousRound(){
+    if(currentRound > 1){
+        currentRound = currentRound - 1;
+        roundDetails(0, currentRound);
+        roundDetails(1, currentRound);
+
+    }
+    else{
+        alert("Erreur : le tour à afficher doit être compris entre 1 et 6!")
+
+    }
+
+}
+
+function nextRound(){
+    if(currentRound < 13){
+        currentRound = currentRound + 1;
+        roundDetails(0, currentRound);
+        roundDetails(1, currentRound);
+
+    }
+    else{
+        alert("Erreur : le tour à afficher doit être compris entre 1 et 6!")
+
+    }
+
+}
+
+roundDetails(0, 1);
+roundDetails(1, 1);
+
+/*
+LeftArrow = document.getElementById("LeftArrow");
+RightArrow = document.getElementById("RightArrow");
+
+LeftArrow.addEventListener('click', previousRound());
+RightArrow.addEventListener('click', nextRound());
+*/
