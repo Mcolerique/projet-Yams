@@ -1,43 +1,39 @@
 html {
-	background-color: #191970; 
-	font-size: 16px;
+  background-color: lightgreen;
+  font-size: 1rem;
 }
-header{
-    display: flex;
-    
-}
-h1{
-    display:flex;
-	flex-direction: row ;
-	align-items: center ;
-	justify-content:space-around;
 
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
 }
-label{
-    display: flex ;
-    flex-direction: row ;
-    justify-content: space-around;
-    
+h1 {
+  border: 1rem;
+  border-radius: 0.5rem;
 }
-input[type="radio"]{
-    display: flex ;
-    flex-direction: row ;
-    justify-content: center ;
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-a{
-    box-shadow: 0.4rem 0.4rem 0.5rem black;
-    border-radius: 1rem ; 
-    border: 1rem;
-    margin: 1rem;
-    flex-wrap: wrap  ;
-    display:flex;
-	align-items: center  ;
-	justify-content:space-around;
-    background-color: blueviolet;
+.href-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
-a:hover{
-    width:105% ; 
+a {
+  margin: 10px;
+  padding: 0.6rem 1.3rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: rgb(0, 128, 19);
+  box-shadow: 0.5rem 0.5rem 0.6rem black;
 }
-a:hover , a.current-menu{
-    background-color : white;
-} 
+a:hover {
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0.5rem 0.5rem 0.6rem black;
+  background-color: white;
+}
+
