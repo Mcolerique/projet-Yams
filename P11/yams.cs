@@ -100,7 +100,7 @@ class Yams{
                     joueur[j].bonus = verifBonus(joueur[j]);
                 }
 
-                Console.WriteLine($"Pour l'instant vous avez un total de {joueur[i].score} point + {joueur[j].bonus} bonus");
+                Console.WriteLine($"Pour l'instant vous avez un total de {joueur[j].score} point + {joueur[j].bonus} bonus");
                 Console.WriteLine();
             }
         }
