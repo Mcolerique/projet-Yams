@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Collections.Generic;
 
 class Yams{
@@ -62,6 +61,8 @@ class Yams{
                                                     new Challenge("yams", "Yam's", "Obtenir 5 dés de même valeur  ;  50 points"),
                                                     new Challenge("chance", "Chance", "Obtenir le maximum de points  ;  Le total des dés obtenus")
                                                 };
+
+    private static readonly Random rnd = new Random(); // Instance partagée pour générer des nombres aléatoires
     static void Main()
     {
         bool encoreJouer=true;
@@ -69,7 +70,7 @@ class Yams{
         {
             jeu();
             Console.WriteLine("Voulez vous relancer une partie ? o/n");
-            if(Console.ReadLine()=="n")
+            if(Console.ReadKey().KeyChar=="n")
             {
                 encoreJouer=false;
             }
@@ -107,7 +108,6 @@ class Yams{
         creaJson(joueur);                      // Génère un fichier JSON avec les résultats
     }
     public static void tour(ref Joueur joueur, int tours){
-        Random rnd = new Random();                                        // Génère des nombres aléatoires pour les dés
         int[] des = new int[5];                                           // Tableau contenant les résultats des 5 dés
         bool[] relancerDes = new bool[5] {true,true,true,true,true};      // Indique si chaque dé doit être relancé
         int i=0;                                                          // Compteur du nombre de relances
@@ -120,7 +120,6 @@ class Yams{
                 if(relancerDes[j]==true)    // Relance le dé uniquement si marqué pour relance
                 {
                     des[j]=rnd.Next(1,7);   // Génère un nouveau résultat pour le dé (entre 1 et 6)
-                    Thread.Sleep(500);      // Ajoute une petite pause pour simuler le lancer
                 }
             }
             if(i<2)                         // Permet au joueur de choisir les dés à relancer si ce n'est pas le dernier tour
@@ -378,16 +377,28 @@ class Yams{
 
         while(!choixValide)         // Boucle jusqu'à ce que le joueur fasse un choix valide
         {
-            choix = int.Parse(Console.ReadLine());  // Lit l'entrée utilisateur et convertit en entier
-            Console.WriteLine();
-
-            if(choix==0)            //Si l'utilisateur veut afficher les descriptions des challenges
+            try
             {
-                afficheChallengesDetaillé(j);  // Affiche les descriptions détaillées des challenges
-                Console.WriteLine("Quel challenge voulez vous choisir ?");
-                choix = int.Parse(Console.ReadLine());  // Lit un nouveau choix de challenge
+                choix = int.Parse(Console.ReadLine());  // Lit l'entrée utilisateur et convertit en entier
+                Console.WriteLine();
 
-                if(!j.challengeDispo.Contains(choix))   // Vérifie si le choix est valide
+                if(choix==0)            //Si l'utilisateur veut afficher les descriptions des challenges
+                {
+                    afficheChallengesDetaillé(j);  // Affiche les descriptions détaillées des challenges
+                    Console.WriteLine("Quel challenge voulez vous choisir ?");
+                    choix = int.Parse(Console.ReadLine());  // Lit un nouveau choix de challenge
+
+                    if(!j.challengeDispo.Contains(choix))   // Vérifie si le choix est valide
+                    {
+                        Console.WriteLine("Veullez choisir un challenge valide");  // Message d'erreur
+                    }
+                    else
+                    {
+                        choixValide = true;  // Le choix est valide
+                        return choix;        // Retourne le choix
+                    }  
+                }
+                else if(!j.challengeDispo.Contains(choix))  // Si le choix n'est pas dans les challenges disponibles
                 {
                     Console.WriteLine("Veullez choisir un challenge valide");  // Message d'erreur
                 }
@@ -397,15 +408,14 @@ class Yams{
                     return choix;        // Retourne le choix
                 }  
             }
-            else if(!j.challengeDispo.Contains(choix))  // Si le choix n'est pas dans les challenges disponibles
+            catch (FormatException) // Capture l'erreur si l'entrée n'est pas un entier valide
             {
-                Console.WriteLine("Veullez choisir un challenge valide");  // Message d'erreur
+                Console.WriteLine("Erreur : veuillez entrer un nombre entier valide.");
             }
-            else
+            catch (Exception ex) // Capture toute autre erreur éventuelle
             {
-                choixValide = true;  // Le choix est valide
-                return choix;        // Retourne le choix
-            }  
+                Console.WriteLine($"Une erreur inattendue est survenue : {ex.Message}");
+            }
         }
         return choix;  // Retourne le choix (ne sera jamais atteint dans la logique actuelle)
     }
