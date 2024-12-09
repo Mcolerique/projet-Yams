@@ -7,13 +7,11 @@ using System.Collections.Generic;
 class Yams{
     public struct Challenge
     {
-        public int code;
         public string nom;
         public string nomAfficher;
-        public string sescription
-        public Challenge(int c, string n, string nA, string desc)
+        public string description;
+        public Challenge(string n, string nA, string desc)
         {
-            code = c;
             nom = n;
             nomAfficher = nA;
             description = desc;
@@ -44,21 +42,21 @@ class Yams{
     public static Challenge[] CHALLENGE = new Challenge[]
                                                 {
                                                     // Challenges mineurs
-                                                    new Challenge(1, "nombre1", "Nombre de 1", "Obtenir le maximum de 1  ;  Somme des dés ayant obtenu 1"),
-                                                    new Challenge(2,"nombre2", "Nombre de 2", "Obtenir le maximum de 2  ;  Somme des dés ayant obtenu 2"),
-                                                    new Challenge(3, "nombre3", "Nombre de 3", "Obtenir le maximum de 3  ;  Somme des dés ayant obtenu 3"),
-                                                    new Challenge(4, "nombre4", "Nombre de 4", "Obtenir le maximum de 4  ;  Somme des dés ayant obtenu 4"),
-                                                    new Challenge(5, "nombre5", "Nombre de 5", "Obtenir le maximum de 5  ;  Somme des dés ayant obtenu 5"),
-                                                    new Challenge(6, "nombre6", "Nombre de 6", "Obtenir le maximum de 6  ;  Somme des dés ayant obtenu 6"),
+                                                    new Challenge("nombre1", "Nombre de 1", "Obtenir le maximum de 1  ;  Somme des dés ayant obtenu 1"),
+                                                    new Challenge("nombre2", "Nombre de 2", "Obtenir le maximum de 2  ;  Somme des dés ayant obtenu 2"),
+                                                    new Challenge("nombre3", "Nombre de 3", "Obtenir le maximum de 3  ;  Somme des dés ayant obtenu 3"),
+                                                    new Challenge("nombre4", "Nombre de 4", "Obtenir le maximum de 4  ;  Somme des dés ayant obtenu 4"),
+                                                    new Challenge("nombre5", "Nombre de 5", "Obtenir le maximum de 5  ;  Somme des dés ayant obtenu 5"),
+                                                    new Challenge("nombre6", "Nombre de 6", "Obtenir le maximum de 6  ;  Somme des dés ayant obtenu 6"),
 
                                                     // Challenges majeurs
-                                                    new Challenge(7, "brelan", "Brelan", "Obtenir 3 dés de même valeur  ;  Somme des 3 dés identiques"),
-                                                    new Challenge(8, "carre", "Carré", "Obtenir 4 dés de même valeur  ;  Somme des 4 dés identiques"),
-                                                    new Challenge(9, "full", "Full", "Obtenir 3 dés de même valeur + 2 dés de même valeur  ;  25 points"),
-                                                    new Challenge(10, "petite", "Petite suite", "Obtenir 1-2-3-4 ou 2-3-4-5 ou 3-4-5-6  ;  30 points"),
-                                                    new Challenge(11, "grande", "Grande suite", "Obtenir 1-2-3-4-5 ou 2-3-4-5-6  ;  40 points"),
-                                                    new Challenge(12, "yams", "Yam's", "Obtenir 5 dés de même valeur  ;  50 points"),
-                                                    new Challenge(13, "chance", "Chance", "Obtenir le maximum de points  ;  Le total des dés obtenus")
+                                                    new Challenge("brelan", "Brelan", "Obtenir 3 dés de même valeur  ;  Somme des 3 dés identiques"),
+                                                    new Challenge("carre", "Carré", "Obtenir 4 dés de même valeur  ;  Somme des 4 dés identiques"),
+                                                    new Challenge("full", "Full", "Obtenir 3 dés de même valeur + 2 dés de même valeur  ;  25 points"),
+                                                    new Challenge("petite", "Petite suite", "Obtenir 1-2-3-4 ou 2-3-4-5 ou 3-4-5-6  ;  30 points"),
+                                                    new Challenge("grande", "Grande suite", "Obtenir 1-2-3-4-5 ou 2-3-4-5-6  ;  40 points"),
+                                                    new Challenge("yams", "Yam's", "Obtenir 5 dés de même valeur  ;  50 points"),
+                                                    new Challenge("chance", "Chance", "Obtenir le maximum de points  ;  Le total des dés obtenus")
                                                 };
     static void Main()
     {
@@ -416,7 +414,7 @@ class Yams{
         Console.WriteLine("0. Description des challenges");
         for(int i=0; i<j.challengeDispo.Count; i++)
         {
-            Console.WriteLine("{0}. {1}", j.challengeDispo[i], CHALLENGE[j.challengeDispo[i]-1].nomAfficher);
+            Console.WriteLine($"{j.challengeDispo[i]}. {CHALLENGE[j.challengeDispo[i]-1].nomAfficher}");
         }
         Console.WriteLine();
     }
@@ -424,7 +422,7 @@ class Yams{
     {
         for(int i=0; i<j.challengeDispo.Count; i++)
         {
-            Console.WriteLine("{0}. {1} ; {2} ; {3}", j.challengeDispo[i], CHALLENGE[j.challengeDispo[i]-1].nomAfficher, CHALLENGE[j.challengeDispo[i]-1].description);
+            Console.WriteLine($"{j.challengeDispo[i]}. {CHALLENGE[j.challengeDispo[i]-1].nomAfficher} ; {CHALLENGE[j.challengeDispo[i]-1].description} ;");
         }
         Console.WriteLine();
     }
