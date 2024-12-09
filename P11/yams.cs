@@ -87,7 +87,12 @@ class Yams{
                 Console.WriteLine("vous aviez les des suivant : ");
                 afficheDes(joueur[j].desParTour[i]);
                 Console.WriteLine($"Vous avez gagné {joueur[j].scoreParTour[i]} points");
-                Console.WriteLine($"Pour l'instant vous avez un total de {somme(joueur[j].scoreParTour)} point + {verifBonus(joueur[0])} bonus");
+                joueur[j].score += joueur[j].scoreParTour[i];
+                if(joueur[j].bonus != 35 && ( joueur[j].challengeDispo.Contains(1) || joueur[j].challengeDispo.Contains(2) || joueur[j].challengeDispo.Contains(3) || joueur[j].challengeDispo.Contains(4) || joueur[j].challengeDispo.Contains(5) || joueur[j].challengeDispo.Contains(6) ))
+                {
+                    joueur[j].bonus = verifBonus(joueur[j]);
+                }
+                Console.WriteLine($"Pour l'instant vous avez un total de {joueur[i].score} point + {joueur[j].bonus} bonus");
                 Console.WriteLine();
             }
         }
@@ -441,8 +446,6 @@ class Yams{
     {
         for(int i = 0; i<joueur.Length; i++)
         {
-            joueur[i].score = somme(joueur[i].scoreParTour);
-            joueur[i].bonus = verifBonus(joueur[i]);
             Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",joueur[i].pseudo,joueur[i].score, joueur[i].bonus,joueur[i].score + joueur[i].bonus);
             Console.WriteLine();
         }
