@@ -34,6 +34,10 @@ h1{
     font-weight: 150;
 }
 
+a{
+    color: lightgray;
+
+}
 
 section{
     margin-left: 0;
@@ -64,4 +68,8 @@ th{
 td{
 text-align: center;
 
+}
+
+img.Arrow{
+    cursor: pointer;
 }
