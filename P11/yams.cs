@@ -460,40 +460,81 @@ class Yams{
     }
     public static Joueur[] initialisationJeu()
     {
-        Joueur[] j = new Joueur[2];  // Crée un tableau pour stocker deux joueurs
-        Console.Write("Entrez le pseudo du joueur 1 : ");
-        string ps1 = Console.ReadLine();
-        Console.Write("Entrez le pseudo du joueur 2 : ");
-        string ps2 = Console.ReadLine();
-
-        // Initialise chaque joueur avec un ID et un pseudo
-        j[0] = new Joueur(1,ps1);
-        j[1] = new Joueur(2,ps2);
+        Console.WriteLine("Combien de joueur ?");
+        int nbJoueurs = int.Parse(Console.ReadLine());
+        Joueur[] j = new Joueur[nbJoueurs];  // Crée un tableau pour stocker deux joueurs
+        string ps;
+        for(int i=0; i<nbJoueurs ; i++)
+        {
+            Console.Write($"Entrez le pseudo du joueur {i+1} : ");
+            ps = Console.ReadLine();
+            j[i] = new Joueur((i+1),ps);                         // Initialise chaque joueur avec un ID et un pseudo
+        }
         return j;  // Retourne le tableau contenant les deux joueurs
     }
     public static void affichageFinPartie(ref Joueur[] joueur)
     {
+        int[] points = new int[joueur.Length];         // Tableau pour stocker les scores totaux des joueurs
+        
         // Affiche le score de chaque joueur et calcule leur total (score + bonus)
         for(int i = 0; i<joueur.Length; i++)
         {
-            Console.WriteLine("{0} a marqué {1} points et {2} points bonus se qui fait un total de {3} points",joueur[i].pseudo,joueur[i].score, joueur[i].bonus,joueur[i].score + joueur[i].bonus);
+            points[i] = (joueur[i].score + joueur[i].bonus);  // Calcul du score total (score + bonus)
+            Console.WriteLine($"{joueur[i].pseudo} a marqué {joueur[i].score} points et {joueur[i].bonus} points bonus se qui fait un total de {points[i]} points");
             Console.WriteLine();
         }
         
-        // Compare les scores totaux des joueurs pour déterminer le vainqueur
-        if((joueur[0].score + joueur[0].bonus) < (joueur[1].score + joueur[1].bonus))
+        int indexVictorieux = indexGagnant(points);   // Trouve l'index du gagnant, ou -1 en cas d'égalité
+
+        // Affiche le vainqueur ou déclare une égalité
+        if(indexVictorieux != -1)
         {
-            Console.WriteLine("Victoire de {0}",joueur[1].pseudo);  // Joueur 2 gagne
-        }
-        else if((joueur[0].score + joueur[0].bonus) > (joueur[1].score + joueur[1].bonus))
-        {
-            Console.WriteLine("Victoire de {0}",joueur[0].pseudo);  // Joueur 1 gagne
+            Console.WriteLine($"Victoire de {joueur[indexVictorieux].pseudo}");  // Affiche le pseudo du gagnant
         }
         else
         {
-            Console.WriteLine("Egalité");  // Aucun gagnant
+            Console.WriteLine("Il y a une égalité");  // Aucun gagnant, égalité
         }
         Console.WriteLine();
+    }
+    public static int indexGagnant(int[] tab)
+    {
+        int max = tab[0]; // Initialisation du score maximum avec le premier élément
+        int indexMax = 0; // Index du joueur avec le score maximum
+
+        // Parcourt le tableau pour trouver le score maximum et son index
+        for (int i = 1; i < tab.Length; i++)
+        {
+            if (tab[i] > max)
+            {
+                max = tab[i]; // Met à jour le score maximum
+                indexMax = i; // Met à jour l'index correspondant
+            }
+        }
+
+        return verifEgaliter(tab, indexMax); // Vérifie si le score maximum est unique ou s'il y a égalité
+    }
+
+    public static int verifEgaliter(int[] tab, int index)
+    {
+        int cptMax = 0; // Compteur pour vérifier combien de joueurs ont le score maximum
+
+        // Compte le nombre de joueurs ayant le même score que le maximum
+        for (int i = 0; i < tab.Length; i++)
+        {
+            if (tab[i] == tab[index])
+            {
+                cptMax++;
+            }
+        }
+
+        // Si plus d'un joueur a le score maximum, il y a égalité
+        if (cptMax > 1)
+        {
+            return -1; // Retourne -1 pour indiquer une égalité
+        }
+
+        return index; // Retourne l'index du joueur gagnant s'il est unique
     }
     public static int verifBonus(Joueur j)
     {
@@ -514,8 +555,15 @@ class Yams{
     public static void creaJson(Joueur[] joueur)
     {
         // Génère un nom de fichier JSON unique basé sur les pseudos des joueurs et la date actuelle
-        string date = DateTime.Today.ToString("yyyy-MM-dd");  
-        string nomJson = joueur[0].pseudo +"_"+joueur[1].pseudo+"_"+date+".json";
+        string date = DateTime.Today.ToString("yyyy-MM-dd");
+        string nomJson = "";
+
+        for(int i = 0; i<joueur.Length; i++)
+        {
+            nomJson += joueur[i].pseudo+"_";
+        }
+        nomJson += date+".json";
+
 
         // Crée un flux pour écrire dans un fichier
         FileStream fs = new FileStream(nomJson, FileMode.Create, FileAccess.Write);
