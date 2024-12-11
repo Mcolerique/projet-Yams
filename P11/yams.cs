@@ -36,7 +36,11 @@ class Yams{
             desParTour = new int[13][];
             bonus = 0;
             score = 0;
-            challengeDispo = new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+            challengeDispo = new List<int>();
+            for(int j=0; j<CHALLENGE.Length; j++)
+            {
+                challengeDispo.Add((j+1));
+            }
             challengeUtiliser = new List<int>();
         }
     }
@@ -70,21 +74,21 @@ class Yams{
         {
             jeu();
             Console.WriteLine("Voulez vous relancer une partie ? o/n");
-            if(Console.ReadKey().KeyChar=="n")
+            if(Console.ReadKey().KeyChar=='n')
             {
                 encoreJouer=false;
             }
         }
     }
     public static void jeu(){
-        Joueur[] joueur = initialisationJeu();  // Initialisation des joueurs
-        for(int i=0; i<13; i++)                 // 13 tours
+        Joueur[] joueur = initialisationJeu();                // Initialisation des joueurs
+        for(int i=0; i<CHALLENGE.Length; i++)                 // Autant de tour qu'il y a de Challenge
         {
             Console.WriteLine();
             Console.WriteLine($"Tour n°{i+1}");
             Console.WriteLine();
 
-            for(int j=0; j<joueur.Length; j++)  // Tour de chaque joueur
+            for(int j=0; j<joueur.Length; j++)               // Tour de chaque joueur
             {
                 Console.WriteLine($"Tour de {joueur[j].pseudo} :");
                 tour(ref joueur[j],i);
