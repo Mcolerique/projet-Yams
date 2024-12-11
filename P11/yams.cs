@@ -589,7 +589,7 @@ class Yams{
 
         // Ajout des résultats des rounds
         leFichier.WriteLine("   \"rounds\": [");
-        for (int i = 0; i < joueur[0].scoreParTour.Length; i++)
+        for (int i = 0; i < CHALLENGE.Length; i++)
         {
             leFichier.WriteLine("       {");
             leFichier.WriteLine($"           \"id\": {i + 1},");
@@ -604,7 +604,7 @@ class Yams{
                 leFichier.WriteLine(j == joueur.Length - 1 ? "               }" : "               },");
             }
             leFichier.WriteLine("           ]");
-            leFichier.WriteLine(i == joueur[0].scoreParTour.Length - 1 ? "       }" : "       },");
+            leFichier.WriteLine(i == CHALLENGE.Length - 1 ? "       }" : "       },");
         }
         leFichier.WriteLine("   ],");
 
