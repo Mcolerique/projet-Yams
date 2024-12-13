@@ -460,17 +460,43 @@ class Yams{
     }
     public static Joueur[] initialisationJeu()
     {
-        Console.WriteLine("Combien de joueur ?");
-        int nbJoueurs = int.Parse(Console.ReadLine());
-        Joueur[] j = new Joueur[nbJoueurs];  // Crée un tableau pour stocker deux joueurs
-        string ps;
-        for(int i=0; i<nbJoueurs ; i++)
+        int nbJoueurs = 0; // Déclare nbJoueurs avant le try
+        bool fin = false;
+
+        while (!fin)
         {
-            Console.Write($"Entrez le pseudo du joueur {i+1} : ");
-            ps = Console.ReadLine();
-            j[i] = new Joueur((i+1),ps);                         // Initialise chaque joueur avec un ID et un pseudo
+            try
+            {
+                Console.WriteLine("Combien de joueurs ?");
+                nbJoueurs = int.Parse(Console.ReadLine());
+            
+                if (nbJoueurs <= 0)
+                {
+                    Console.WriteLine("Erreur : le nombre de joueurs doit être supérieur à zéro.");
+                    continue;
+                }
+
+                fin = true; // Sort de la boucle si l'entrée est correcte
+            }
+            catch (FormatException) // Capture l'erreur si l'entrée n'est pas un entier valide
+            {
+                Console.WriteLine("Erreur : veuillez entrer un nombre entier valide.");
+            }
+            catch (Exception ex) // Capture toute autre erreur éventuelle
+            {
+                Console.WriteLine($"Une erreur inattendue est survenue : {ex.Message}");
+            }
         }
-        return j;  // Retourne le tableau contenant les deux joueurs
+
+        Joueur[] j = new Joueur[nbJoueurs]; // Crée un tableau de joueurs
+        for (int i = 0; i < nbJoueurs; i++)
+        {
+            Console.Write($"Entrez le pseudo du joueur {i + 1} : ");
+            string ps = Console.ReadLine();
+            j[i] = new Joueur(i + 1, ps); // Initialise chaque joueur avec un ID et un pseudo
+        }
+
+        return j; // Retourne le tableau contenant les joueurs
     }
     public static void affichageFinPartie(ref Joueur[] joueur)
     {
