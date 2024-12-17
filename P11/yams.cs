@@ -149,17 +149,25 @@ class Yams{
         char reponse;          // Stocke la réponse de l'utilisateur
         for(int i=0; i<5; i++) // Parcourt chaque dé pour demander si le joueur souhaite le conserver
         {
-            Console.Write("Voulez vous gardez le {0} ? y/n  ", des[i]);
-            reponse = Console.ReadKey().KeyChar;  // Lit la réponse du joueur
-            Console.WriteLine();
-            if(reponse=='y')    // Si le joueur répond 'y', le dé est conservé
+            do
             {
-                relancerDes[i]=false;  // Le dé ne sera pas relancé
-            }
-            else
-            {
-                relancerDes[i]=true;   // Le dé sera relancé
-            }      
+                Console.Write($"Voulez-vous garder le dé {des[i]} ? y/n : ");
+                reponse = Console.ReadKey().KeyChar;  // Lit la réponse du joueur
+                Console.WriteLine();
+
+                if (reponse == 'y')    // Si le joueur répond 'y', le dé est conservé
+                {
+                    relancerDes[i] = false;  // Le dé ne sera pas relancé
+                }
+                else if (reponse == 'n') // Si le joueur répond 'n', le dé sera relancé
+                {
+                    relancerDes[i] = true;   // Le dé sera relancé
+                }
+                else
+                {
+                    Console.WriteLine("Réponse invalide. Veuillez répondre par 'y' (oui) ou 'n' (non).");
+                }
+            } while (reponse != 'y' && reponse != 'n'); // Répète jusqu'à obtenir une réponse valide
         }
         Console.WriteLine();           // Ajoute une ligne vide pour plus de lisibilité
     }
@@ -470,9 +478,9 @@ class Yams{
                 Console.WriteLine("Combien de joueurs ?");
                 nbJoueurs = int.Parse(Console.ReadLine());
             
-                if (nbJoueurs <= 0)
+                if (nbJoueurs <= 1)
                 {
-                    Console.WriteLine("Erreur : le nombre de joueurs doit être supérieur à zéro.");
+                    Console.WriteLine("Erreur : le nombre de joueurs doit être supérieur à un.");
                     continue;
                 }
 
@@ -489,13 +497,23 @@ class Yams{
         }
 
         Joueur[] j = new Joueur[nbJoueurs]; // Crée un tableau de joueurs
+        string ps;
         for (int i = 0; i < nbJoueurs; i++)
         {
-            Console.Write($"Entrez le pseudo du joueur {i + 1} : ");
-            string ps = Console.ReadLine();
-            j[i] = new Joueur(i + 1, ps); // Initialise chaque joueur avec un ID et un pseudo
-        }
+            do
+            {
+                Console.Write($"Entrez le pseudo du joueur {i + 1} : ");
+                ps = Console.ReadLine();
 
+                if (string.IsNullOrWhiteSpace(ps))
+                {
+                    Console.WriteLine("Erreur : le pseudo ne peut pas être vide ou rempli d'espaces. Veuillez réessayer.");
+                }
+
+            } while (string.IsNullOrWhiteSpace(ps)); // Répète tant que le pseudo est invalide
+
+            j[i] = new Joueur(i + 1, ps); // Initialise chaque joueur avec un ID et un pseudo valide
+        }
         return j; // Retourne le tableau contenant les joueurs
     }
     public static void affichageFinPartie(ref Joueur[] joueur)
