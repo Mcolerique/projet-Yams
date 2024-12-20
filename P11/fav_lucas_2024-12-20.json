@@ -1,16 +1,16 @@
 {
    "parameters": {
        "code": "groupe8-003",
-       "date": "2024-12-17"
+       "date": "2024-12-20"
    },
    "players": [
        {
            "id": 1,
-           "pseudo": " "
+           "pseudo": "fav"
        },
        {
            "id": 2,
-           "pseudo": ""
+           "pseudo": "lucas"
        }
    ],
    "rounds": [
@@ -19,15 +19,15 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [3,6,3,3,6],
-                   "challenge": "nombre1",
-                   "score": 0
+                   "dice": [3,3,5,3,3],
+                   "challenge": "nombre3",
+                   "score": 12
                },
                {
                    "id_player": 2,
-                   "dice": [1,5,3,5,5],
+                   "dice": [2,1,1,3,2],
                    "challenge": "nombre1",
-                   "score": 1
+                   "score": 2
                }
            ]
        },
@@ -36,15 +36,15 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [5,3,5,3,2],
-                   "challenge": "nombre3",
-                   "score": 6
+                   "dice": [5,1,5,4,3],
+                   "challenge": "chance",
+                   "score": 18
                },
                {
                    "id_player": 2,
-                   "dice": [2,5,4,6,4],
-                   "challenge": "nombre2",
-                   "score": 2
+                   "dice": [4,5,3,2,2],
+                   "challenge": "chance",
+                   "score": 16
                }
            ]
        },
@@ -53,14 +53,14 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [2,5,6,4,6],
-                   "challenge": "nombre2",
-                   "score": 2
+                   "dice": [4,3,5,1,4],
+                   "challenge": "yams",
+                   "score": 0
                },
                {
                    "id_player": 2,
-                   "dice": [2,2,4,5,6],
-                   "challenge": "nombre3",
+                   "dice": [6,6,3,3,2],
+                   "challenge": "yams",
                    "score": 0
                }
            ]
@@ -70,15 +70,15 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [1,2,6,2,6],
-                   "challenge": "nombre4",
-                   "score": 0
+                   "dice": [4,4,3,1,1],
+                   "challenge": "nombre1",
+                   "score": 2
                },
                {
                    "id_player": 2,
-                   "dice": [4,6,5,4,5],
-                   "challenge": "nombre4",
-                   "score": 8
+                   "dice": [5,2,5,4,5],
+                   "challenge": "nombre5",
+                   "score": 15
                }
            ]
        },
@@ -87,15 +87,15 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [4,1,2,2,6],
-                   "challenge": "nombre5",
+                   "dice": [1,1,2,2,6],
+                   "challenge": "grande",
                    "score": 0
                },
                {
                    "id_player": 2,
-                   "dice": [6,2,1,1,5],
-                   "challenge": "nombre5",
-                   "score": 5
+                   "dice": [3,3,3,5,6],
+                   "challenge": "grande",
+                   "score": 0
                }
            ]
        },
@@ -104,15 +104,15 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [3,1,3,1,4],
-                   "challenge": "nombre6",
+                   "dice": [1,4,4,6,6],
+                   "challenge": "petite",
                    "score": 0
                },
                {
                    "id_player": 2,
-                   "dice": [3,3,2,1,2],
-                   "challenge": "nombre6",
-                   "score": 0
+                   "dice": [4,6,2,3,3],
+                   "challenge": "nombre3",
+                   "score": 6
                }
            ]
        },
@@ -121,15 +121,15 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [2,3,6,3,6],
-                   "challenge": "brelan",
+                   "dice": [5,6,5,6,3],
+                   "challenge": "full",
                    "score": 0
                },
                {
                    "id_player": 2,
-                   "dice": [3,4,3,3,4],
-                   "challenge": "brelan",
-                   "score": 9
+                   "dice": [6,1,3,5,6],
+                   "challenge": "nombre6",
+                   "score": 12
                }
            ]
        },
@@ -138,14 +138,14 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [2,6,1,1,1],
+                   "dice": [5,3,5,6,2],
                    "challenge": "carre",
                    "score": 0
                },
                {
                    "id_player": 2,
-                   "dice": [2,4,4,4,1],
-                   "challenge": "carre",
+                   "dice": [1,2,3,5,5],
+                   "challenge": "petite",
                    "score": 0
                }
            ]
@@ -155,15 +155,15 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [6,2,3,1,4],
-                   "challenge": "full",
-                   "score": 0
+                   "dice": [4,4,6,6,4],
+                   "challenge": "nombre4",
+                   "score": 12
                },
                {
                    "id_player": 2,
-                   "dice": [6,6,5,4,4],
-                   "challenge": "full",
-                   "score": 0
+                   "dice": [4,4,6,5,4],
+                   "challenge": "nombre4",
+                   "score": 12
                }
            ]
        },
@@ -172,15 +172,15 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [2,3,4,4,5],
-                   "challenge": "petite",
-                   "score": 30
+                   "dice": [6,6,3,6,6],
+                   "challenge": "nombre6",
+                   "score": 24
                },
                {
                    "id_player": 2,
-                   "dice": [2,2,3,4,6],
-                   "challenge": "petite",
-                   "score": 0
+                   "dice": [5,4,4,4,5],
+                   "challenge": "brelan",
+                   "score": 12
                }
            ]
        },
@@ -189,14 +189,14 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [2,3,4,4,5],
-                   "challenge": "grande",
-                   "score": 0
+                   "dice": [6,4,5,5,4],
+                   "challenge": "nombre5",
+                   "score": 10
                },
                {
                    "id_player": 2,
-                   "dice": [1,3,3,3,6],
-                   "challenge": "grande",
+                   "dice": [1,2,6,1,5],
+                   "challenge": "full",
                    "score": 0
                }
            ]
@@ -206,14 +206,14 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [6,5,4,6,2],
-                   "challenge": "yams",
-                   "score": 0
+                   "dice": [1,2,2,2,2],
+                   "challenge": "nombre2",
+                   "score": 8
                },
                {
                    "id_player": 2,
-                   "dice": [6,6,5,5,6],
-                   "challenge": "yams",
+                   "dice": [5,1,1,6,1],
+                   "challenge": "nombre2",
                    "score": 0
                }
            ]
@@ -223,15 +223,15 @@
            "results": [
                {
                    "id_player": 1,
-                   "dice": [4,6,6,6,3],
-                   "challenge": "chance",
-                   "score": 25
+                   "dice": [1,1,3,1,1],
+                   "challenge": "brelan",
+                   "score": 3
                },
                {
                    "id_player": 2,
-                   "dice": [5,2,4,3,6],
-                   "challenge": "chance",
-                   "score": 20
+                   "dice": [3,5,4,5,5],
+                   "challenge": "carre",
+                   "score": 0
                }
            ]
        }
@@ -239,13 +239,13 @@
    "final_result": [
        {
            "id_player": "1",
-           "bonus": 0,
-           "score": 63
+           "bonus": 35,
+           "score": 124
        },
        {
            "id_player": "2",
            "bonus": 0,
-           "score": 45
+           "score": 75
        }
    ]
 }

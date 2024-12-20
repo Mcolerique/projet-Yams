@@ -82,6 +82,7 @@ class Yams{
     }
     public static void jeu(){
         Joueur[] joueur = initialisationJeu();                // Initialisation des joueurs
+        int scoreChallengeMineure;
         for(int i=0; i<CHALLENGE.Length; i++)                 // Autant de tour qu'il y a de Challenge
         {
             Console.WriteLine();
@@ -99,12 +100,24 @@ class Yams{
                 Console.WriteLine($"Vous avez gagné {joueur[j].scoreParTour[i]} points");
 
                 joueur[j].score += joueur[j].scoreParTour[i];
-                if(joueur[j].bonus != 35 && joueur[j].challengeUtiliser[i] <= 6)
+                if(joueur[j].bonus != 35)
                 {
-                    joueur[j].bonus = verifBonus(joueur[j]);
+                    scoreChallengeMineure = verifBonus(joueur[j]);
+                    if(scoreChallengeMineure >= 63)
+                    {
+                        joueur[j].bonus = 35;
+                        Console.WriteLine($"Pour l'instant vous avez un total de {joueur[j].score} point + {joueur[j].bonus} bonus");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Pour l'instant vous avez un total de {joueur[j].score} point, vous n'avez pas de bonus, pour l'instant la somme de la partie mineure atteint {scoreChallengeMineure}");
+                    }
                 }
-
-                Console.WriteLine($"Pour l'instant vous avez un total de {joueur[j].score} point + {joueur[j].bonus} bonus");
+                else
+                {
+                    Console.WriteLine($"Pour l'instant vous avez un total de {joueur[j].score} point + {joueur[j].bonus} bonus");
+                }
+    
                 Console.WriteLine();
             }
         }
@@ -116,6 +129,26 @@ class Yams{
         bool[] relancerDes = new bool[5] {true,true,true,true,true};      // Indique si chaque dé doit être relancé
         int i=0;                                                          // Compteur du nombre de relances
         bool fin=false;                                                   // Variable de contrôle pour arrêter la boucle
+        char rep;
+        do
+        {
+            Console.WriteLine("Voulez vous affiché les challenges disponible ? y/n");
+            rep = Console.ReadKey().KeyChar;
+            if (rep == 'y')    // Si le joueur répond 'y', affiche les challenges
+            {
+                Console.WriteLine();
+                afficheChallenges(joueur);
+                Console.WriteLine();
+            }
+            else if (rep == 'n')
+            {
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("Réponse invalide. Veuillez répondre par 'y' (oui) ou 'n' (non).");
+            }
+        } while (rep != 'y' && rep != 'n'); // Répète jusqu'à obtenir une réponse valide
 
         while(i<3 && !fin)                  // Boucle permettant jusqu'à 3 lancers de dés ou jusqu'à ce que le joueur décide d'arrêter
         {
@@ -147,29 +180,55 @@ class Yams{
         Console.WriteLine("Voici vos dès :");
         afficheDes(des);       // Affiche les résultats actuels des dés
         char reponse;          // Stocke la réponse de l'utilisateur
-        for(int i=0; i<5; i++) // Parcourt chaque dé pour demander si le joueur souhaite le conserver
+        int i;
+        do
         {
-            do
+            Console.Write($"Voulez-vous garder tous les des ? y/n : ");
+            reponse = Console.ReadKey().KeyChar;  // Lit la réponse du joueur
+            Console.WriteLine();
+            if (reponse == 'y')    // Si le joueur répond 'y', les dés sont conservé
             {
-                Console.Write($"Voulez-vous garder le dé {des[i]} ? y/n : ");
-                reponse = Console.ReadKey().KeyChar;  // Lit la réponse du joueur
-                Console.WriteLine();
-
-                if (reponse == 'y')    // Si le joueur répond 'y', le dé est conservé
+                for(i=0; i<5; i++)
                 {
                     relancerDes[i] = false;  // Le dé ne sera pas relancé
                 }
-                else if (reponse == 'n') // Si le joueur répond 'n', le dé sera relancé
+                Console.WriteLine();
+            }
+            else if (reponse == 'n')
+            {
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("Réponse invalide. Veuillez répondre par 'y' (oui) ou 'n' (non).");
+            }
+        } while (reponse != 'y' && reponse != 'n'); // Répète jusqu'à obtenir une réponse valide
+        if(reponse != 'y')
+        {
+            for(i=0; i<5; i++) // Parcourt chaque dé pour demander si le joueur souhaite le conserver
+            {
+                do
                 {
-                    relancerDes[i] = true;   // Le dé sera relancé
-                }
-                else
-                {
-                    Console.WriteLine("Réponse invalide. Veuillez répondre par 'y' (oui) ou 'n' (non).");
-                }
-            } while (reponse != 'y' && reponse != 'n'); // Répète jusqu'à obtenir une réponse valide
+                    Console.Write($"Voulez-vous garder le dé {des[i]} ? y/n : ");
+                    reponse = Console.ReadKey().KeyChar;  // Lit la réponse du joueur
+                    Console.WriteLine();
+
+                    if (reponse == 'y')    // Si le joueur répond 'y', le dé est conservé
+                    {
+                        relancerDes[i] = false;  // Le dé ne sera pas relancé
+                    }
+                    else if (reponse == 'n') // Si le joueur répond 'n', le dé sera relancé
+                    {
+                        relancerDes[i] = true;   // Le dé sera relancé
+                    }
+                    else
+                    {
+                        Console.WriteLine("Réponse invalide. Veuillez répondre par 'y' (oui) ou 'n' (non).");
+                    }
+                } while (reponse != 'y' && reponse != 'n'); // Répète jusqu'à obtenir une réponse valide
+            }
+            Console.WriteLine();           // Ajoute une ligne vide pour plus de lisibilité
         }
-        Console.WriteLine();           // Ajoute une ligne vide pour plus de lisibilité
     }
     public static bool finRelance(bool[] tab)
     {
@@ -524,8 +583,7 @@ class Yams{
         for(int i = 0; i<joueur.Length; i++)
         {
             points[i] = (joueur[i].score + joueur[i].bonus);  // Calcul du score total (score + bonus)
-            Console.WriteLine($"{joueur[i].pseudo} a marqué {joueur[i].score} points et {joueur[i].bonus} points bonus se qui fait un total de {points[i]} points");
-            Console.WriteLine();
+            Console.WriteLine($"\n{joueur[i].pseudo} a marqué {joueur[i].score} points et {joueur[i].bonus} points bonus se qui fait un total de {points[i]} points\n");
         }
         
         int indexVictorieux = indexGagnant(points);   // Trouve l'index du gagnant, ou -1 en cas d'égalité
@@ -590,11 +648,7 @@ class Yams{
                 scoreChallengeMineure += j.scoreParTour[i];
             }
         }
-        if(scoreChallengeMineure >= 63)  // Si le score des challenges mineurs atteint ou dépasse 63, un bonus de 35 points est attribué
-        {
-            return 35;
-        }
-        return 0;  // Pas de bonus
+        return scoreChallengeMineure;
     }
     public static void creaJson(Joueur[] joueur)
     {
