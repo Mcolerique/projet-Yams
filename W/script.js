@@ -46,7 +46,7 @@ async function roundDetails(round){
 
 
 
-    //Affichage des donnes sur la page web (details)
+    //Affichage des donnees sur la page web (details)
     currentRound.textContent = 'Tour n°' + idTour;
 
     player1Dices.textContent = player1dices;
@@ -90,12 +90,87 @@ function nextRound(){
 }
 
 
-/*//FONCTION REQUETE API POUR APERCU DE LA PARTIE
-async function mainInfos(){
+//FONCTION REQUETE API POUR APERCU DE LA PARTIE
+function mainInfos(){
 
+    //Selection des balises ou seront affichees les donnees renvoyees par l'API
+    const playersNames = document.getElementById('playersNames')
+
+    const bestScore = document.getElementById('bestScore');
+    const player1Challenge = document.getElementById('player' + 0 + 'Challenges');
+    const player1Score = document.getElementById('player1Score');
+    const player2Score = document.getElementById('player2Score');
+
+    const date = document.getElementById('date');
+    const playedCombs = document.getElementById('playedCombs');
+    const winner = document.getElementById('winner');
+
+    //TRAITEMENT DE LA DATE
+    //Requete a l'API
+    fetch(apiUrl + 'parameters/')
+      .then((response) => {
+        if(!response.ok){
+            throw new Error("Erreur: Requête échouée!");
+        }
+        return response.json();
+
+      })
+      //Affichage des donnees sur la page web
+      .then((data => {
+        date.textContent = data.date;
+
+      }))
+
+    //TRAITEMENT DES NOMS DE JOUEURS
+    //Requete a l'API
+    fetch(apiUrl + 'players/')
+      .then((response) => {
+        if(!response.ok){
+            throw new Error("Erreur: Requête échouée!");
+        }
+        return response.json();
+
+      })
+      //Affichage des donnees sur la page web
+      .then((data => {
+        playersNames.textContent = data[0].pseudo + ' et ' + data[1].pseudo;
+
+      }))
+
+      //TRAITEMENT DES SCORES ET DU GAGNANT
+    //Requete a l'API
+    fetch(apiUrl + 'final-result/')
+    .then((response) => {
+      if(!response.ok){
+          throw new Error("Erreur: Requête échouée!");
+      }
+      return response.json();
+
+    })
+    //Affichage des donnees sur la page web
+    .then((data => {
+      player1Score.textContent = data[0].score + ' pts';
+      player2Score.textContent = data[1].score + ' pts';
+      if(data[0].score < data[1].score){
+        winner.textContent = 'Joueur ' + data[1].id_player;
+      }
+      if(data[0].score > data[1].score){
+        winner.textContent = 'Joueur ' + data[0].id_player;
+      }
+      if(data[0].score == data[1].score){
+        winner.textContent = 'Egalité! ';
+      }
+
+    }))
 
 }
-*/
 
-roundDetails(1);
+
+if(document.title == 'Aperçu des résultats'){
+    mainInfos();
+}
+if(document.title == 'Résultats tour par tour'){
+    roundDetails(1);
+
+}
 
