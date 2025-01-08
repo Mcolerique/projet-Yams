@@ -1,8 +1,23 @@
 //DECLARATION DES VARIABLES ET DES CONSTANTES   
 let currentRound = 1;
-const apiUrl = 'http://yams.iutrs.unistra.fr:3000/api/games/kl3r67pybl/';
+let apiUrl;
+
+//FONCTION CREATION URL
+function makeURl(gameID){
+    apiUrl = 'http://yams.iutrs.unistra.fr:3000/api/games/' + gameID + '/';
+
+}
 
 
+//FONCTION VALIDATION DU FORMULAIRE ID DE PARTIE
+function formSubmit(){
+    //Recuperation de la saisie de l'utilisateur
+    const form = document.getElementById('gameID');
+    //Mise a jour de apiURL
+    makeURl(form.elements['gameIDstring'].value);
+    //Nouvelle requete avec apiURL a jour
+    start();
+}
 
 //FONCTION REQUETE API POUR DETAILS TOUR PAR TOUR
 
@@ -13,6 +28,7 @@ async function roundDetails(round){
 
     const player1Dices = document.getElementById('player'+ 0 + 'Dices');
     const player1Challenge = document.getElementById('player' + 0 + 'Challenges');
+    document.getElementById('player' + 0 + 'Challenges');
     const player1Score = document.getElementById('player' + 0 + 'Score');
 
     const player2Dices = document.getElementById('player'+ 1 + 'Dices');
@@ -165,12 +181,15 @@ function mainInfos(){
 
 }
 
+function start(){
+  if(document.title == 'Aperçu des résultats'){
+      mainInfos();
+  }
+  if(document.title == 'Résultats tour par tour'){
+      roundDetails(1);
 
-if(document.title == 'Aperçu des résultats'){
-    mainInfos();
+  }
 }
-if(document.title == 'Résultats tour par tour'){
-    roundDetails(1);
 
-}
-
+makeURl('kl3r67pybl');
+start();

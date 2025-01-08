@@ -28,6 +28,10 @@ nav{
 
 }
 
+input{
+    margin-top: 10px;
+}
+
 h1{
     margin-bottom: 0px;
     font-size: 4rem;
