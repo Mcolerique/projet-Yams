@@ -21,31 +21,32 @@ function formSubmit(){
 
 //FONCTION REQUETE API POUR DETAILS TOUR PAR TOUR
 
-async function roundDetails(round){
+function roundDetails(round){
 
-    //Selection des balises ou seront affichees les donnees renvoyees par l'API
-    const currentRound = document.getElementById('ntour')
+  //Selection des balises ou seront affichees les donnees renvoyees par l'API
+  const currentRound = document.getElementById('ntour')
 
-    const player1Dices = document.getElementById('player'+ 0 + 'Dices');
-    const player1Challenge = document.getElementById('player' + 0 + 'Challenges');
-    document.getElementById('player' + 0 + 'Challenges');
-    const player1Score = document.getElementById('player' + 0 + 'Score');
+  const player1Dices = document.getElementById('player'+ 0 + 'Dices');
+  const player1Challenge = document.getElementById('player' + 0 + 'Challenges');
+  document.getElementById('player' + 0 + 'Challenges');
+  const player1Score = document.getElementById('player' + 0 + 'Score');
 
-    const player2Dices = document.getElementById('player'+ 1 + 'Dices');
-    const player2Challenge = document.getElementById('player' + 1 + 'Challenges');
-    const player2Score = document.getElementById('player' + 1 + 'Score');
+  const player2Dices = document.getElementById('player'+ 1 + 'Dices');
+  const player2Challenge = document.getElementById('player' + 1 + 'Challenges');
+  const player2Score = document.getElementById('player' + 1 + 'Score');
 
-    //Requete a l'API
-    const response = await fetch(apiUrl + 'rounds/' + round);
-
-    //Check des erreurs
+  //Requete a l'API
+  fetch(apiUrl + 'rounds/' + round)
+  .then((response) => {
     if(!response.ok){
-        alert('Erreur de récupération des données : ' + response.status);
-
+        throw new Error("Erreur: Requête échouée!");
     }
+    return response.json();
 
-    //Preparation des donnees renvoyees par l'API
-    const data = await response.json();
+  })
+  //Utilisation des données renvoyées par l'API
+  .then((data => {
+
     const player1Datas = data.results[0];
     const player2Datas = data.results[1];
 
@@ -60,8 +61,6 @@ async function roundDetails(round){
     const player2challenges = player2Datas.challenge;
     const player2score = player2Datas.score;
 
-
-
     //Affichage des donnees sur la page web (details)
     currentRound.textContent = 'Tour n°' + idTour;
 
@@ -73,8 +72,8 @@ async function roundDetails(round){
     player2Challenge.textContent = player2challenges;
     player2Score.textContent = player2score + ' pts';
 
-
-
+  }))
+  
 }
 
 //FONCTIONS MAJ DETAILS CHANGEMENT DE TOUR
@@ -86,7 +85,7 @@ function previousRound(){
 
     }
     else{
-        alert("Erreur : le tour à afficher doit être compris entre 1 et 6!")
+        alert("Erreur : le tour à afficher doit être compris entre 1 et 13!")
 
     }
 
@@ -99,7 +98,7 @@ function nextRound(){
 
     }
     else{
-        alert("Erreur : le tour à afficher doit être compris entre 1 et 6!")
+        alert("Erreur : le tour à afficher doit être compris entre 1 et 13!")
 
     }
 
@@ -153,7 +152,7 @@ function mainInfos(){
 
       }))
 
-      //TRAITEMENT DES SCORES ET DU GAGNANT
+    //TRAITEMENT DES SCORES ET DU GAGNANT
     //Requete a l'API
     fetch(apiUrl + 'final-result/')
     .then((response) => {
@@ -186,7 +185,7 @@ function start(){
       mainInfos();
   }
   if(document.title == 'Résultats tour par tour'){
-      roundDetails(1);
+      roundDetails(currentRound);
 
   }
 }
