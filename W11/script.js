@@ -1,3 +1,4 @@
+
 function Yams(){
   fetch("http://yams.iutrs.unistra.fr:3000/api/games/kl3r67pybl/players")
     .then((response) => {
@@ -10,18 +11,13 @@ function Yams(){
     })
     .then((data) => {
       // Code pour traiter les données récupérées
-      const header = document.getElementsByTagName("header")[0];
-      codeHTML = `
-        <form></form>
-        
-        `;
-        header.innerHTML= codeHTML ;
+
     })
     .catch((error) => {
       // Code pour gérer les erreurs
       console.error("erreure de chargement de l'API", error);
     });
-    
+
   fetch("http://yams.iutrs.unistra.fr:3000/api/games/kl3r67pybl/players")
     .then((response) => {
       if (!response.ok) {
@@ -41,8 +37,10 @@ function Yams(){
     .catch((error) => {
       console.error("erreure de chargement de l'API", error);
     });
+  
+    
 
-  fetch("http://yams.iutrs.unistra.fr:3000/api/games/kl3r67pybl/rounds/1")
+  fetch(`http://yams.iutrs.unistra.fr:3000/api/games/kl3r67pybl/rounds/${i}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Erreur !");
@@ -50,17 +48,17 @@ function Yams(){
       return response.json();
     })
     .then((data) => {
-      const section = document.getElementsByTagName("article")[0];
+      const article = document.getElementsByTagName("article")
       codeHTML = `
-      <p>Tour n°${data.id}</p>
+      <button id="B1" onClick="Round()" >Tour Précedent</button>
       <ul>   
             <li> Joueur ${data.results[0].id_player}</li>
             <li>Dés obtenue : `;
       for (i = 0; i < data.results[0].dice.length; i++) {
-        codeHTML = codeHTML + data.results[0].dice[i];
-      section.innerHTML= codeHTML
+        codeHTML = codeHTML + data.results[0].dice[i] + ",";
       }
-      codeHTML = `
+      codeHTML = codeHTML + "</li>";
+      codeHTML =  codeHTML + `
             </li>
             <li>Challenge choisi : ${data.results[0].challenge}</li>
             <li>Nombre de point gagnés : ${data.results[0].score} </li>
@@ -70,20 +68,22 @@ function Yams(){
             <li> Joueur ${data.results[1].id_player}</li>
             <li>Dés obtenue :`;
       for (i = 0; i < data.results[1].dice.length; i++) {
-        codeHTML = codeHTML + data.results[1].dice[i];
+        codeHTML = codeHTML + data.results[1].dice[i] + ",";
       }
-      codeHTML = codeHTML + "</li>";
-      section.innerHTML= codeHTML; 
-      codeHTML = `
+      codeHTML = codeHTML +"</li>";
+      codeHTML = codeHTML + `
             <li>Challenge choisi : ${data.results[1].challenge}</li>
             <li>Nombre de point gagnés : ${data.results[1].score} </li>
         </ul>
-        <p>Tour n°${data.id}</p>`;
-        section.innerHTML= codeHTML ;
+        	<button id="B2" onClick="Round()">Tour Suivant</button>
+        `;
+        article.innerHTML = codeHTML
+        
     })
     .catch((error) => {
       console.error("erreure de chargement de l'API", error);
     });
+
   fetch("http://yams.iutrs.unistra.fr:3000/api/games/kl3r67pybl/final-result")
     .then((response) => {
       if (!response.ok) {
@@ -94,7 +94,8 @@ function Yams(){
     .then((data) => {
       const footer = document.getElementsByTagName("footer")[0];
       codeHTML = `
-        <p>Score finale : ${data[0].score} / ${data[1].score}</p>
+        <p>Score finale : Joueur1 ${data[0].score}</p>
+        <p>Score finale : Joueur2 ${data[1].score}</p>
         `;
       footer.innerHTML = codeHTML;
     })
@@ -102,5 +103,28 @@ function Yams(){
       console.error("erreure de chargement de l'API", error);
     });
 }
+let B1 = document.getElementById("B1")
+let B2 = document.getElementById('B2')
+
+let i = 1 
+
+
+
+function Round(){
+  if(B1.onclick && i > 1){
+      i--;
+      console.log(i)  
+  } else if (B2.onclick && i < 13){
+      i++;
+      console.log(i)  
+  }
+
+  
+}
+
+
+
+
+
 
 
