@@ -9,7 +9,7 @@
 
 <body>
     <header>
-        <img src="sources/logo.png" alt="Logo">
+        <img src="sources/images/logo.jpeg" alt="Logo">
     </header>
 
     <main>
@@ -17,98 +17,37 @@
             <h1>Détails de la partie</h1>
             <a href="globalresults.html">informations simplifiées</a>
             <form id="gameID">
-                Entre un ID de partie (optionel) <input type="text" name="gameIDstring" maxlength="10" size="10">
+                Entre un ID de partie (optionel) <input type="text" name="gameIDstring" maxlengspan="10" size="10">
                 <input type="button" value="Valider" onClick="formSubmit()">
             </form>
 
         </nav>
-
-        <!--
-        <section>
-            <article class="data-content">
-                <p>Joueur 1</p>
-                <p>12345</p>
-                <p>Challenge 1</p>
-                <p>-- pts</p>
-
-            </article>
-
-            <article clas="data-label">
-                <p>Tour n°--</p>
-                <p>Dés obtenus</p>
-                <p>Challenges joués</p>
-                <p>Points gagnés</p>
-
-            <article class="datas">
-                <p>Joueur 2</p>
-                <p>12345</p>
-                <p>Challenge 1</p>
-                <p>-- pts</p>
-
-            </article>
-        </section>
-        -->
-    
-        <!--Version 2 avec organisation en tableaux des informations-->
-        <section>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Joueur 1</th>
-                        <th id="ntour">Tour n°--</th>
-                        <th>Joueur 2</th>
-                    </tr>
-
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td>Dés obtenus</td>
-                        <td></td>
-
-                    </tr>
-                    <tr>
-                        <td id="player0Dices">-, -, -, -, -</td>
-                        <td></td>
-                        <td id="player1Dices">-, -, -, -, -</td>
-
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Challenges joués</td>
-                        <td></td>
-
-                    </tr>    
-                    <tr>
-                        <td id="player0Challenges">Challenge --</td>
-                        <td></td>
-                        <td id="player1Challenges">Challenge --</td>
-
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Points gagnés</td>
-                        <td></td>
-
-                    </tr>
-                    <tr>
-                        <td id="player0Score">-- pts</td>
-                        <td></td>
-                        <td id="player1Score">-- pts</td>
-
-                    </tr>
-
-
-                </tbody>
-
-            </table>
-
+        <div class="section-container">
             <img src="sources/images/LeftArrow.png" alt="LeftArrow" id="LeftArrow" class="Arrow" onClick="previousRound()">
+            <section class="section-content">
+                
+                    <div class="player0">
+                        <span>Joueur 1</span>
+                        <span id="player0Dices">-, -, -, -, -</span>
+                        <span id="player0Challenges">Challenge --</span>
+                        <span id="player0Score">-- pts</span>
+                    </div>
+                    <div class="round">
+                        <span id="ntour">Tour n°--</span>
+                        <span>Dés obtenus</span>
+                        <span>Challenges joués</span>
+                        <span>Points gagnés</span>
+                    </div>
+                    <div class="player1">
+                        <span>Joueur 2</span>
+                        <span id="player1Dices">-, -, -, -, -</span>
+                        <span id="player1Challenges">Challenge --</span>
+                        <span id="player1Score">-- pts</span>
+                    </div>
+                
+            </section>
             <img src="sources/images/RightArrow.png" alt="RightArrow" id="RightArrow" class="Arrow" onClick="nextRound()">
-
-        </section>
-
+        </div>
     </main>
     
     <footer>

@@ -1,94 +1,63 @@
 <!DOCTYPE html>
 <html lang="fr">
-
-<head>
+  <head>
     <title>Aperçu des résultats</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="main.css">
-</head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="main.css" />
+  </head>
 
-<body>
+  <body>
     <header>
-        <img src="sources/logo.png" alt="Logo">
+      <img src="sources/images/logo.jpeg" alt="Logo" />
     </header>
 
     <main>
         <nav>
             <h1>Aperçu de la partie</h1>
-            <a href="detailsresults.html">voir les détails</a><br>
+            <a href="detailsresults.html">voir les détails</a><br />
             <form id="gameID">
-                Entre un ID de partie (optionel) <input type="text" name="gameIDstring" maxlength="10" size="10">
-                <input type="button" value="Valider" onClick="formSubmit()">
+                Entre un ID de partie (optionel)
+                <input type="text" name="gameIDstring" maxlength="10" size="10" />
+                <input type="button" value="Valider" onClick="formSubmit()" />
             </form>
-
         </nav>
-
-        <!--
         <section>
             <article>
-                <p>Noms des joueurs: --/--</p>
-                <p>Points du joueur 1: --</p>
-                <p>Points du joueur 2: --</p>
-                <p>Gagnant: Joueur --</p>
-
+                <div>
+                    <span>Noms des joueurs :</span>
+                    <span id="playersNames">--/--</span>
+                </div>
+                <div>
+                    <span>Meilleur score en une manche :</span>
+                    <span id="bestScore">-- pts</span>
+                </div>
+                <div>
+                    <span>Points du joueur 1 :</span>
+                    <span id="player1Score">-- pts</span>
+                </div>
+                <div>
+                    <span>Date de la partie :</span>
+                    <span id="date">AAAA-MM-JJ</span>
+                </div>
+                <div>
+                    <span>Points du joueur 2 :</span>
+                    <span id="player2Score">-- pts</span>
+                </div>
+                <div>
+                    <span>Liste des combinaisons jouées :</span>
+                    <span id="playedCombs">--</span>
+                </div>
+                <div>
+                    <span>Gagnant de la partie :</span>
+                    <span id="winner">Joueur --</span>
+                </div>
             </article>
-
-            <article>
-                <p>Meilleur score en une manche: --</p>
-                <p>Durée de la partie: -- tours</p>
-                <p>Combinaisons jouées: --</p>
-
-            </article>
-        </section>
-        -->
-
-        <!--Version 2 avec organisation en tableaux des informations-->
-        <section>
-            <table>
-                <tbody>
-                    <tr>
-                        <th>Noms des joueurs :</th>
-                        <td id="playersNames">--/--</td>
-                        <th>Meilleur score en une manche : </th>
-                        <td id="bestScore">-- pts</td>
-
-                    </tr>
-                    <tr>
-                        <th>Points du joueur 1 : </th>
-                        <td id="player1Score">-- pts</td>
-                        <th>Date de la partie : </th>
-                        <td id="date">AAAA-MM-JJ</td>
-
-
-                    </tr>
-                    <tr>
-                        <th>Points du joueur 2 : </th>
-                        <td id="player2Score">-- pts</td>
-                        <th>Liste des combinaisons jouées :</th>
-                        <td id="playedCombs">--</td>
-
-                    </tr>
-                    <tr>
-                        <th>Gagnant de la partie : </th>
-                        <td id="winner">Joueur --</td>
-
-                    </tr>
-
-                </tbody>
-                
-
-            </table>
-
         </section>
     </main>
-
-    
     <footer>
-        <!--A ajouter selon la décision faite pour la maquette-->
+      <!--A ajouter selon la décision faite pour la maquette-->
     </footer>
 
     <script src="script.js"></script>
-
-</body>
-
+  </body>
 </html>
