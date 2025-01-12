@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>Yam's</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <img src="img/logo.jpeg" alt="Logo Yam's" />
+      <h1>Yam's</h1>
+    </header>
+    <main>
+      <section>
+        <div class="href-group">
+          <a href="manche.html">Voir la Partie manche par manche</a>
+          <a href="complete.html">Voir la partie complète</a>
+        </div>
+      </section>
+      <p>Augmenter le song avant de clicker ! mais pas trop :) </p>
+      <button onclick="document.getElementById('musique').play()">
+        Lancer la musique
+      </button>
+      <audio id="musique" loop>
+        <source src="sound/musique_de_fond.mp3" type="audio/mpeg" />
+      </audio>
+    </main>
+    <footer>Réaliser pars un groupe du tp8</footer>
+  </body>
+</html>

@@ -3,7 +3,11 @@
 html {
   font-size: 1rem;
   background-color: lightslategray;
+<<<<<<< HEAD
   color: white;
+=======
+  color: rgb(0, 0, 0);
+>>>>>>> 6f46b1a3ded4a67ee6431a1708b8e80a034b0995
   text-align: center;
   font-family: Vazirmatn, sans-serif;
   font-weight: 150;
@@ -35,7 +39,11 @@ h1 {
 }
 
 a {
+<<<<<<< HEAD
   color: lightgray;
+=======
+  color: rgb(46, 46, 46);
+>>>>>>> 6f46b1a3ded4a67ee6431a1708b8e80a034b0995
 }
 
 section {
@@ -44,7 +52,11 @@ section {
   margin-left: auto;
   margin-right: auto;
   width: 80%;
+<<<<<<< HEAD
   border-color: white;
+=======
+  border-color: rgb(0, 0, 0);
+>>>>>>> 6f46b1a3ded4a67ee6431a1708b8e80a034b0995
   border-style: solid;
   border-width: 0.1rem;
 }
@@ -68,8 +80,13 @@ div {
   border-color: white;
   border-style: solid;
   border-width: 0.1rem;
+<<<<<<< HEAD
   word-wrap: break-word; /* Permet de couper les mots trop longs */
     overflow: hidden; /* Cache le débordement */
+=======
+  word-wrap: break-word; 
+    overflow: hidden;
+>>>>>>> 6f46b1a3ded4a67ee6431a1708b8e80a034b0995
 }
 .player0, .player1, .round {
   display: flex;
