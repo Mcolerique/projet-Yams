@@ -2,6 +2,24 @@
 let currentRound = 1;
 let apiUrl;
 
+//DICTIONNAIRE POUR AFFICHER LES BONS NOMS
+const nameMapping = {
+  "nombre1": "Nombre de 1",
+  "nombre2": "Nombre de 2",
+  "nombre3": "Nombre de 3",
+  "nombre4": "Nombre de 4",
+  "nombre5": "Nombre de 5",
+  "nombre6": "Nombre de 6",
+  "brelan": "Brelan",
+  "carre": "Carré",
+  "full": "Full",
+  "petite": "Petite suite",
+  "grande": "Grande suite",
+  "yams": "Yam's",
+  "chance": "Chance"
+};
+
+
 //FONCTION CREATION URL
 function makeURl(gameID){
     apiUrl = 'http://yams.iutrs.unistra.fr:3000/api/games/' + gameID + '/';
@@ -64,11 +82,11 @@ function roundDetails(round){
     currentRound.textContent = 'Tour n°' + idTour;
 
     player1Dices.textContent = player1dices;
-    player1Challenge.textContent = player1challenges;
+    player1Challenge.textContent = nameMapping[player1challenges] || player1challenges;
     player1Score.textContent = player1score + ' pts';
 
     player2Dices.textContent = player2dices;
-    player2Challenge.textContent = player2challenges;
+    player2Challenge.textContent = nameMapping[player2challenges] || player2challenges;
     player2Score.textContent = player2score + ' pts';
 
   }))
