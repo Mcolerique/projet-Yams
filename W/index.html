@@ -2,17 +2,52 @@
 <html lang="fr">
 
 <head>
-    <title>Présentation du Yam's</title>
+    <title>Résultats de la partie</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
+    <header>
+        <a href="index.html">
+            <img src="sources/images/logo.jpeg" alt="Logo">
+        </a>
+        
+    </header>
 
-    <header></header>
-    <main></main>
-    <footer></footer>
+    <main>
+        <section>
+            <h1>Afficher les résultats de la partie</h1>
+            <p>Quel type de résultats souhaitez vous afficher :</p>
+            <article>
+                <figure>
+                    <img src="sources/images/details.png" alt="Détails" class="option-icon">
+                    <figcaption>
+                        <a href="detailsresults.html" class="option-link">Résultats détaillés (tour par tour)</a>
+                        <p>Affiche les détails de chaque tour pour chaque joueur.</p>
+                    </figcaption>
+                </figure>
+            </article>
+            <article>
+                <figure>
+                    <img src="sources/images/overview.png" alt="Globaux" class="option-icon">
+                    <figcaption>
+                        <a href="globalresults.html" class="option-link">Résultats globaux (infos générales)</a>
+                        <p>Affiche une vue d'ensemble de la partie, avec les scores, le gagnantet davantage d'information.</p>
+                    </figcaption>
+                </figure>
+            </article>
+        </section>
+    </main>
 
+    <footer>
+        <p>Augmenter le song avant de clicker ! mais pas trop :) </p>
+        <button onclick="document.getElementById('musique').play()">
+            Lancer la musique de fond
+          </button>
+          <audio id="musique" loop>
+            <source src="sound/musique_de_fond.mp3" type="audio/mpeg" />
+          </audio>
 </body>
-
 </html>
+
