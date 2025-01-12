@@ -8,7 +8,6 @@ function makeURl(gameID){
 
 }
 
-
 //FONCTION VALIDATION DU FORMULAIRE ID DE PARTIE
 function formSubmit(){
     //Recuperation de la saisie de l'utilisateur
