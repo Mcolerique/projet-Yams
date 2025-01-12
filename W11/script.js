@@ -21,6 +21,7 @@ function Yams(){
       // Code pour gérer les erreurs
       console.error("erreure de chargement de l'API", error);
     });
+    
   fetch("http://yams.iutrs.unistra.fr:3000/api/games/kl3r67pybl/players")
     .then((response) => {
       if (!response.ok) {
