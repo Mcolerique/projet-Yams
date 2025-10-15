@@ -9,10 +9,8 @@ Ce fichier était ensuite lu et interprété par une **page web HTML** pour affi
 ## 👥 Organisation du travail
 
 Projet réalisé en **trinôme** avec :  
-- [Lucas C.]()  
-- [Jules W.]()  
-
-
+- [Lucas C.](https://github.com/Spoltrim)  
+- [Jules W.](https://github.com/julesWW)  
 
 ## 🚀 Lancer le programme
 
